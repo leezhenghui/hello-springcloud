@@ -1,0 +1,15 @@
+elasticsearch_version: 6.4.0 
+
+elasticsearch_home: "/opt/elasticsearch-{{ elasticsearch_version }}"
+config_dir: "{{ elasticsearch_home }}/config" 
+config_file: elasticsearch.yml
+
+logs_dir: /data/elasticsearch/logs
+data_dir: /data/elasticsearch/data
+
+elasticsearch_archive: "elasticsearch-{{ elasticsearch_version }}.zip"
+elasticsearch_download: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch_version }}.zip"
+elasticsearch_download_username: ""
+elasticsearch_download_password: ""
+elasticsearch_download_folder: /vagrant/deps
+elasticsearch_move_to: /opt

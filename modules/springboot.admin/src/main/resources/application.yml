@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: springboot-admin
+  cloud:
+    config:
+      enabled: false
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        tags: management.context-path=/, health.path=/actuator/health, user.name=user, user.password=password
+  profiles:
+    active:
+      - secure
+  boot:
+    admin:
+      discovery:
+        ignored-services: consul
+
+---
+spring:
+  profiles: insecure
+
+---
+spring:
+  profiles: secure
+  security:
+    user:
+      name: "user"
+      password: "password"
+
+---
+
+server:
+  port: 9080
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    consul:
+      config:
+        watch:
+          enabled: true
+      host: localhost
+      port: 8500
+      discovery:
+        register: false
+        tags: management.context-path=/, health.path=/actuator/health, user.name=user, user.password=password
+  application:
+    name: springboot-admin
+  profiles:
+    active:
+      - secure
+  boot:
+    admin:
+      discovery:
+        ignored-services: consul
+server:
+  port: ${NOMAD_PORT_http}
+
+

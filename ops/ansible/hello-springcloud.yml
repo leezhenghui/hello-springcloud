@@ -1,0 +1,18 @@
+- hosts: localhost
+  remote_user: vagrant
+  serial: 1
+  roles:
+    - common
+    - java
+    - consul
+    - nomad
+    - filebeat
+    - hashi-ui-installer
+    - zk
+    - kafka
+    - nginx
+    - elasticsearch
+    - logstash
+    - kibana
+    - wrk
+  become: true

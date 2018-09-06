@@ -1,0 +1,37 @@
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+
+	compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
+
+    compile("org.springframework.cloud:spring-cloud-starter-consul-all:$springCloudVersion")
+
+	compile("io.opentracing.contrib:opentracing-spring-cloud-starter:$otSpringCloudStarterVersion")
+    compile("io.opentracing.brave:brave-opentracing:$otBraveVersion")
+    compile("io.zipkin.reporter2:zipkin-sender-okhttp3:$zipkinSenderVersion")
+
+
+	compile("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudVersion")
+	compile("org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard:$springCloudVersion")
+	compile("org.springframework.cloud:spring-cloud-starter-netflix-turbine:$springCloudVersion") {
+		exclude module: 'spring-cloud-starter-netflix-eureka-client'
+	}
+
+	testCompile("junit:junit:$junitVersion")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+apply plugin: 'org.springframework.boot'
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java']
+		}
+	}
+
+	test {
+		java {
+			srcDirs = ['src/test/java']
+		}
+	}
+}

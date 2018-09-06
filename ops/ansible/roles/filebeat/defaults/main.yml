@@ -1,0 +1,9 @@
+apt_source: "/etc/apt/sources.list.d/elastic-6.x.list"
+
+filebeat_version: 6.4.0
+
+filebeat_archive: "filebeat-{{ filebeat_version }}-amd64.deb"
+filebeat_download: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ filebeat_version}}-amd64.deb"
+filebeat_download_username: ""
+filebeat_download_password: ""
+filebeat_download_folder: /vagrant/deps

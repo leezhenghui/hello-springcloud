@@ -1,0 +1,43 @@
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+	compile ('org.springframework.boot:spring-boot-starter-log4j2')
+
+	compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
+
+	compile("org.springframework.cloud:spring-cloud-starter-consul-all:$springCloudVersion")
+
+	compile("org.springframework.cloud:spring-cloud-starter-zipkin:$springCloudVersion")
+	compile("io.zipkin.java:zipkin-server:$zipkinJavaVersion")
+
+	runtime("io.zipkin.java:zipkin-collector-kafka:$zipkinKafkaCollVersion")
+	runtime("io.zipkin.java:zipkin-autoconfigure-collector-kafka:$zipinKafakCollAutoCfgVersion")
+	//runtime("io.zipkin.java:zipkin-storage-cassandra3:$zipkinStorageCassandra3Version")
+	// runtime("io.zipkin.java:zipkin-autoconfigure-storage-cassandra3:$zipinKafakStorageCassandra3AutoCfgVersion")
+
+	runtime("io.zipkin.java:zipkin-autoconfigure-ui:$zipkinJavaVersion")
+
+	testCompile("junit:junit:$junitVersion")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+configurations {
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+}
+
+apply plugin: 'org.springframework.boot'
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java']
+		}
+	}
+
+	test {
+		java {
+			srcDirs = ['src/test/java']
+		}
+	}
+}

@@ -1,0 +1,33 @@
+- name: check archive stat
+  stat: path={{ filebeat_download_folder }}/{{ filebeat_archive }}
+  register: filebeat_archive_stat
+
+- name: download filebeat
+  get_url: >
+    url={{filebeat_download}}
+    dest={{filebeat_download_folder}}
+    url_username={{ filebeat_download_username }}
+    url_password={{ filebeat_download_password }}
+  register: filebeat_was_downloaded
+  when: filebeat_archive_stat.stat.exists == False
+  tags: [filebeat]
+
+- name: install filebeat 
+  shell: "sudo dpkg -i {{ filebeat_download_folder }}/{{ filebeat_archive }}"
+  tags: [filebeat]
+
+- name: Check if filebeat is installed 
+  shell: "which filebeat | grep \"/usr/bin/filebeat\" | grep -v grep"
+  ignore_errors: yes
+  changed_when: false
+  register: filebeat_exists
+  tags: [filebeat]
+
+- name: Report status of filebeat
+  fail:
+    msg: |
+      Filebeat does not exist.
+      Return code from `grep`:
+      {{ filebeat_exists.rc }}
+  when: filebeat_exists.rc != 0
+  tags: [filebeat]

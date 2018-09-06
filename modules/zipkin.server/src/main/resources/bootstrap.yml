@@ -1,0 +1,47 @@
+spring:
+  cloud:
+    consul:
+      config:
+        watch:
+          enabled: true
+      host: localhost
+      port: 8500
+      discovery:
+        register-health-check: true
+        instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+  application:
+    name: zipkin-server
+zipkin:
+  collector:
+    kafka:
+      bootstrap-servers: 'localhost:9092'
+      topic: 'zipkin'
+#  storage:
+#    type: 'cassandra3'
+server:
+  port: 9411
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    consul:
+      config:
+        watch:
+          enabled: true
+      host: localhost
+      port: 8500
+      discovery:
+        register: false
+  application:
+    name: zipkin-server
+server:
+  port: ${NOMAD_PORT_http}
+zipkin:
+  collector:
+    kafka:
+      bootstrap-servers: 'localhost:9092'
+      topic: 'zipkin'
+#  storage:
+#    type: 'cassandra3'

@@ -1,0 +1,16 @@
+logs_dir: /data/zookeeper/logs
+zk_version: 3.4.13
+
+config_dir: "/opt/zookeeper-{{ zk_version }}/conf"
+config_file: zk.dev.conf
+
+data_dir: /data/zookeeper/data
+logs_dir: /data/zookeeper/logs
+
+zk_archive: "zookeeper-{{ zk_version }}.tar.gz"
+zk_download: "http://apache.claz.org/zookeeper/zookeeper-{{ zk_version }}/zookeeper-{{ zk_version }}.tar.gz"
+zk_download_username: ""
+zk_download_password: ""
+zk_download_folder: /vagrant/deps
+zk_home: "/opt/zookeeper-{{ zk_version }}"
+zk_move_to: /opt

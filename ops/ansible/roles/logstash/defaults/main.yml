@@ -1,0 +1,14 @@
+logstash_version: 6.4.0 
+
+logstash_home: "/opt/logstash-{{ logstash_version }}"
+config_dir: "{{ logstash_home }}/config" 
+config_file: logstash.kafka.conf
+
+logs_dir: /data/logstash/logs
+
+logstash_archive: "logstash-{{ logstash_version }}.zip"
+logstash_download: "https://artifacts.elastic.co/downloads/logstash/logstash-{{ logstash_version }}.zip"
+logstash_download_username: ""
+logstash_download_password: ""
+logstash_download_folder: /vagrant/deps
+logstash_move_to: /opt

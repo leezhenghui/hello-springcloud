@@ -1,0 +1,65 @@
+- name: create kafka directory
+  file: >
+    state=directory
+    path={{ item }}
+  with_items:
+    - "{{ data_dir }}"
+    - "{{ logs_dir }}"
+    - "{{ kafka_move_to }}"
+  tags: [kafka]
+
+- name: check archive stat
+  stat: path={{ kafka_download_folder }}/{{ kafka_archive }}
+  register: kafka_archive_stat
+
+- name: download kafka
+  get_url: >
+    url={{ kafka_download }}
+    dest={{ kafka_download_folder }}
+    url_username={{ kafka_download_username }}
+    url_password={{ kafka_download_password }}
+  register: kafka_was_downloaded
+  when: kafka_archive_stat.stat.exists == False
+  tags: [kafka]
+
+- name: copy and unpack
+  unarchive: >
+    src={{ kafka_download_folder }}/{{ kafka_archive }}
+    dest={{ kafka_move_to }}
+    remote_src=yes
+  when: kafka_was_downloaded|changed
+  tags: [kafka]
+
+- name : Copy kafka configuration file
+  copy:
+    src: "{{ config_file }}"
+    dest: "{{ config_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+  tags: [kafka]
+
+- name: Start kafka
+  shell: "nohup {{ kafka_home }}/bin/kafka-server-start.sh {{ config_dir }}/{{ config_file }}
+    >{{ logs_dir }}/kafka.log 2>&1 &"
+  tags: [kafka]
+
+- pause:
+    seconds: 10
+
+- name: Check if Kafka is running
+  shell: "jps | grep \"Kafka\" | grep -v grep"
+  ignore_errors: yes
+  changed_when: false
+  register: service_kafka_status
+  tags: [kafka]
+
+- name: Report status of kafka
+  fail:
+    msg: |
+      Kafka is not running.
+      Return code from `grep`:
+      {{ service_kafka_status.rc }}
+  when: service_kafka_status.rc != 0
+  tags: [kafka]
+

@@ -1,0 +1,67 @@
+- name: create kibana directory
+  file: >
+    state=directory
+    path={{ item }}
+  with_items:
+    - "{{ logs_dir }}"
+    - "{{ kibana_move_to }}"
+  tags: [kibana]
+
+- name: check archive stat
+  stat: path={{ kibana_download_folder }}/{{ kibana_archive }}
+  register: kibana_archive_stat
+
+- name: download kibana
+  get_url: >
+    url={{ kibana_download }}
+    dest={{ kibana_download_folder }}
+    url_username={{ kibana_download_username }}
+    url_password={{ kibana_download_password }}
+  register: kibana_was_downloaded
+  when: kibana_archive_stat.stat.exists == False
+  tags: [kibana]
+
+- name: check archive stat
+  stat: path={{ kibana_home }}
+  register: kibana_home_stat
+
+- name: copy and unpack
+  unarchive: >
+    src={{ kibana_download_folder }}/{{ kibana_archive }}
+    dest={{ kibana_move_to }}
+    remote_src=yes
+  when: kibana_home_stat.stat.exists == False
+  tags: [kibana]
+
+- name : Copy kibana configuration file
+  copy:
+    src: "{{ config_file }}"
+    dest: "{{ config_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: kibana_home_stat.stat.exists == False
+  tags: [kibana]
+
+- name: Start kibana
+  shell: "nohup {{ kibana_home }}/bin/kibana > {{ logs_dir }}/kibana.log 2>&1 &"
+  tags: [kibana]
+
+- pause:
+    seconds: 15 
+
+- name: Check if Kibana is running
+  shell: "netstat -anp | grep 5601 | grep LISTEN"
+  ignore_errors: yes
+  changed_when: false
+  register: service_kibana_status
+  tags: [kibana]
+
+- name: Report status of kibana
+  fail:
+    msg: |
+      Kibana is not running.
+      Return code from `grep`:
+      {{ service_kibana_status.rc }}
+  when: service_kibana_status.rc != 0
+  tags: [kibana]

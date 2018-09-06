@@ -1,0 +1,151 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+
+}
+
+allprojects  {
+  	group = 'hello.springcloud'
+  	version = '1.0.0'
+	  buildDir = 'out'
+}
+
+subprojects {
+  	apply plugin: 'java'
+		apply plugin: 'idea'
+  	sourceCompatibility = 1.8
+  	targetCompatibility = 1.8
+
+  	repositories {
+    	mavenLocal()
+    	mavenCentral()
+			jcenter()
+  	}
+}
+
+apply plugin: 'distribution'
+
+def File confDir = file('conf')
+def File binDir = file('bin')
+def File docsDir = file('docs')
+def File logsDir = file('logs')
+
+distributions {
+  main {
+		baseName = archivesBaseName
+		contents {
+			into ('libs') {
+				from(project(':calculator.ui').libsDir) {
+					include '**/*.jar'
+				}
+				
+				from(project(':add.svc').libsDir) {
+					include '**/*.jar'
+				}
+				
+				from(project(':sub.svc').libsDir) {
+					include '**/*.jar'
+				}
+
+				from(project(':api.gateway').libsDir) {
+					include '**/*.jar'
+				}
+
+				from(project(':springboot.admin').libsDir) {
+					include '**/*.jar'
+				}
+
+				from(project(':zipkin.server').libsDir) {
+					include '**/*.jar'
+				}
+
+				from(project(':turbine.aggr').libsDir) {
+					include '**/*.jar'
+				}
+			}
+
+			into ('conf') {
+			  from {confDir}
+			}
+
+			into ('bin') {
+			  from {binDir}
+			}
+			
+			into ('docs') {
+			  from {docsDir}
+			}
+
+			into('logs') {
+				from {logsDir}
+			}
+
+			includeEmptyDirs = true 
+		}
+	}	
+}
+
+def File deployLibsDir= file('ops/dist/public/libs')
+
+task deployLibs(type: Copy) {
+	from(project(':calculator.ui').libsDir) {
+		include '**/*.jar'
+	}
+
+	from(project(':add.svc').libsDir) {
+		include '**/*.jar'
+	}
+
+	from(project(':sub.svc').libsDir) {
+		include '**/*.jar'
+	}
+
+	from(project(':api.gateway').libsDir) {
+		include '**/*.jar'
+	}
+
+	from(project(':springboot.admin').libsDir) {
+		include '**/*.jar'
+	}
+
+	from(project(':zipkin.server').libsDir) {
+		include '**/*.jar'
+	}
+
+	from(project(':turbine.aggr').libsDir) {
+		include '**/*.jar'
+	}
+
+	into(deployLibsDir)
+}
+
+def File deployLogShipperDefDir = file('ops/dist/public/log-shipper')
+def File logShipperDefDir = file('ops/log-shipper');
+task deployLogShipperDef(type: Copy) {
+	from(logShipperDefDir) {
+		include '**/*.yml'
+	}
+  
+	into(deployLogShipperDefDir)
+}
+
+clean.doLast {
+	file('ops/dist').deleteDir()
+}
+
+task deploy() {
+	dependsOn 'clean'
+	dependsOn 'build'
+  dependsOn 'deployLibs'
+	dependsOn 'deployLogShipperDef'
+
+	tasks.findByName('build').mustRunAfter 'clean'
+	tasks.findByName('deployLibs').mustRunAfter 'build'
+	tasks.findByName('deployLogShipperDef').mustRunAfter 'build'
+}

@@ -1,0 +1,4 @@
+turbine:
+  aggregator:
+    clusterConfig: calculator-ui, api-gateway
+  appConfig: calculator-ui, api-gateway

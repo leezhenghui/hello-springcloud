@@ -1,0 +1,28 @@
+#================================= Paths ======================================
+
+path.data: ${NOMAD_TASK_DIR}/data
+
+path.logs: ${NOMAD_TASK_DIR}/logs
+
+#=========================== Filebeat inputs =============================
+
+filebeat.inputs:
+
+- type: log
+
+  # Change to true to enable this input configuration.
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - ${NOMAD_ALLOC_DIR}/logs/subsvc-task*
+
+#================================ Outputs =====================================
+
+# Configure what output to use when sending the data collected by the beat.
+
+#-------------------------- Console output ------------------------------
+output.console:
+  enabled: true
+  codec.json:
+    pretty: true

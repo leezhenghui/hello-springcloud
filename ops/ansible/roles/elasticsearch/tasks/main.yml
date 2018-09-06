@@ -1,0 +1,75 @@
+- name: create elasticsearch directory
+  file: >
+    state=directory
+    path={{ item }}
+  with_items:
+    - "{{ logs_dir }}"
+    - "{{ data_dir }}"
+    - "{{ elasticsearch_move_to }}"
+  tags: [elasticsearch]
+
+- name: check archive stat
+  stat: path={{ elasticsearch_download_folder }}/{{ elasticsearch_archive }}
+  register: elasticsearch_archive_stat
+
+- name: download elasticsearch
+  get_url: >
+    url={{ elasticsearch_download }}
+    dest={{ elasticsearch_download_folder }}
+    url_username={{ elasticsearch_download_username }}
+    url_password={{ elasticsearch_download_password }}
+  register: elasticsearch_was_downloaded
+  when: elasticsearch_archive_stat.stat.exists == False
+  tags: [elasticsearch]
+
+- name: check archive stat
+  stat: path={{ elasticsearch_home }}
+  register: elasticsearch_home_stat
+
+- name: copy and unpack
+  unarchive: >
+    src={{ elasticsearch_download_folder }}/{{ elasticsearch_archive }}
+    dest={{ elasticsearch_move_to }}
+    remote_src=yes
+  when: elasticsearch_home_stat.stat.exists == False
+  tags: [elasticsearch]
+
+- name : Copy elasticsearch configuration file
+  copy:
+    src: "{{ config_file }}"
+    dest: "{{ config_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: elasticsearch_home_stat.stat.exists == False
+  tags: [elasticsearch]
+
+- name: chown to user ubuntu
+  shell: "chown -R ubuntu:ubuntu {{ elasticsearch_home }} && chown -R ubuntu:ubuntu {{ logs_dir }} && chown -R ubuntu:ubuntu {{ data_dir }}"
+  when: elasticsearch_home_stat.stat.exists == False
+  tags: [elasticsearch]
+
+- name: Start elasticsearch
+  shell: "nohup {{ elasticsearch_home }}/bin/elasticsearch >{{ logs_dir }}/elasticsearch.log 2>&1 &"
+  become: yes
+  become_user: ubuntu
+  tags: [elasticsearch]
+
+- pause:
+    seconds: 10
+
+- name: Check if Elasticsearch is running
+  shell: "jps | grep \"Elasticsearch\" | grep -v grep"
+  ignore_errors: yes
+  changed_when: false
+  register: service_elasticsearch_status
+  tags: [elasticsearch]
+
+- name: Report status of elasticsearch
+  fail:
+    msg: |
+      Elasticsearch is not running.
+      Return code from `grep`:
+      {{ service_elasticsearch_status.rc }}
+  when: service_elasticsearch_status.rc != 0
+  tags: [elasticsearch]

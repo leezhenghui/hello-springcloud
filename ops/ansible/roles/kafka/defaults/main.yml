@@ -1,0 +1,16 @@
+kafka_version: 1.0.2
+scala_version: 2.12
+
+kafka_home: "/opt/kafka_{{ scala_version }}-{{ kafka_version }}"
+config_dir: "{{ kafka_home }}/config" 
+config_file: kafka.dev.conf
+
+logs_dir: /data/kafka/logs
+data_dir: /data/kafka/store
+
+kafka_archive: "kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
+kafka_download: "https://archive.apache.org/dist/kafka/{{ kafka_version }}/{{ kafka_archive }}"
+kafka_download_username: ""
+kafka_download_password: ""
+kafka_download_folder: /vagrant/deps
+kafka_move_to: /opt

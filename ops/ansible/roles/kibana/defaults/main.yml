@@ -1,0 +1,14 @@
+kibana_version: 6.4.0 
+
+kibana_home: "/opt/kibana-{{ kibana_version }}-linux-x86_64"
+config_dir: "{{ kibana_home }}/config" 
+config_file: kibana.yml
+
+logs_dir: /data/kibana/logs
+
+kibana_archive: "kibana-{{ kibana_version }}-linux-x86_64.tar.gz"
+kibana_download: "https://artifacts.elastic.co/downloads/kibana/kibana-{{ kibana_version }}-linux-x86_64.tar.gz"
+kibana_download_username: ""
+kibana_download_password: ""
+kibana_download_folder: /vagrant/deps
+kibana_move_to: /opt

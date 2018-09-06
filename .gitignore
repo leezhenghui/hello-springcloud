@@ -1,0 +1,14 @@
+**/out/*
+# !**/out/libs
+**/dist/*
+*.swp
+*.swo
+.gradle
+.idea
+!gradle/wrapper/gradle-wrapper.jar
+.gradletasknamecache
+ops/ubuntu-xenial-16.04-cloudimg-console.log
+ops/.vagrant
+# ops/deps/kibana-6.4.0-linux-x86_64.tar.gz
+# ops/deps/logstash-6.4.0.zip
+ops/deps/

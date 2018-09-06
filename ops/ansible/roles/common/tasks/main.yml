@@ -1,0 +1,43 @@
+- name: JQ is present
+  apt:
+    name: jq
+    force: yes
+  tags: [common]
+
+- name: GIT is present
+  apt:
+    name: git
+    force: yes
+  tags: [common]
+
+- name: unzip is present
+  apt:
+    name: unzip
+    force: yes
+  tags: [common]
+
+- name: curl is present
+  apt:
+    name: curl
+    force: yes
+  tags: [common]
+
+- name: wget is present
+  apt:
+    name: wget
+    force: yes
+  tags: [common]
+
+- name: python-pip is present
+  apt:
+    name: python-pip
+    force: yes
+  tags: [common]
+
+- name: Host is present
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ item.host_ip }}"
+    line: "{{ item.host_ip }} {{ item.host_name }}"
+  with_items: "{{ host_vars }}"
+  tags: [common]
