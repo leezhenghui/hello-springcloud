@@ -41,3 +41,16 @@
     line: "{{ item.host_ip }} {{ item.host_name }}"
   with_items: "{{ host_vars }}"
   tags: [common]
+
+- name: check deps_home stat
+  stat: path={{ deps_home }}
+  register: deps_home_stat
+
+- name: create deps_home directory
+  file: >
+    state=directory
+    path={{ item }}
+  with_items:
+    - "{{ deps_home }}"
+  when: deps_home_stat.stat.exists == False
+  tags: [common]

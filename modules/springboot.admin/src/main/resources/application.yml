@@ -50,9 +50,7 @@ spring:
         tags: management.context-path=/, health.path=/actuator/health, user.name=user, user.password=password
   application:
     name: springboot-admin
-  profiles:
-    active:
-      - secure
+
   boot:
     admin:
       discovery:

@@ -1,45 +1,10 @@
-# Introduction
+## Introduction
 
 The purpose of this repository aims to provide a hands-on architecture PoC(proof-of-concept) sample that are easy to understand and demonstrate how to **build** and **run** a `microservices architecture(MSA)` application based on the ecosystem composed of the excellent technologies offering by `Spring-Cloud`, `Hashicorp`, `Elastic`,  `Netflix` and etc. 
-In particular, the PoC pursue to cover below functionalities:
- 
- - Dev
-    - `APIDoc`(Swagger based)
-    - `TDD`
-    - `Code Branch Management`
-    
- - MSA Interconnectivity(Application/Infrastructure Runtime)
-    - `API-Gateway(Edger Service)`
-    - `Service Discovery`
-    - `Intra-Communication Load Balance`
-    - `Circuit Breakers`
-    - `Intelligent Routing`
-    - `Distributed Tracing Instrumentation`
-     
-  - MSA Orchestration (Infrastructure Runtime)
-    - `Service Orchestration`(support hybrid deployables)
-    - `Aggregated Logging`(which enabled via attaching a sidecar log-shipper task)
-     
-  - Ops
-    - `Service Admin`
-    - `Service Allocation Status` (hashi-ui)
-    - `Distributed Tracing Reporter`(zipkin-ui)
-    - `Centralized Logging Reporter` (Kibana)
-    - `Java Memory Analysis`
-    - `Java Core Dump Analysis`
-    - `perf_event + flamegraph` based Java profiling (linux only)
-    - `wrk`
- 
- > Notable:
- >
- >    CI/CD refer to the combined practices of `continuous integration` and `continuous delivery`
- >  
- >    In order to keep the PoC sample as simple as possible, I didn't involve CI/CD features here. 
 
 ## Backround
 
-The rapidly growing of the cloud confirms that more and more applications either being built upon cloud-native technology or start to do the cloud transformation, as a result, the modern applications are either built upon microservices architecture or in the period of tranditional architectures (e.g: monothilic or SOA) to micorservices.
-
+The rapidly growing of the cloud confirms that more and more applications either being built upon cloud-native technology or start to do the cloud transformation, as a result, the modern applications are either built upon microservices architecture or in the period of tranditional architectures (e.g: Monolithic or SOA) to micorservices.
 
 ![Modern Application Architecture](./docs/architecture-evolution.png)
 
@@ -55,11 +20,48 @@ Bird's-eye view of cloud-native platform
 
 ![Ladnscape Overview](./docs/architecture-microservices-landscape.png)
 
-## PoC Scenario Overview
+## PoC Scenario 
+
+### Overview
 
 ![PoC Scenario Overview](./docs/architecture-spring-cloud-poc.png)
 
-## Spring-Boot Modules
+The PoC sample pursue to cover below functionalities:
+ 
+ - Dev
+    - `APIDoc`(Swagger based)
+    - `TDD`
+    - `Code Branch Management`
+    
+ - Service Interconnectivity(Application/Infrastructure Runtime)
+    - `API-Gateway`(Edger service)
+    - `Service Discovery`
+    - `Intra-Communication Load Balance` (Private service)
+    - `Circuit Breakers`
+    - `Intelligent Routing`
+    - `Distributed Tracing Instrumentation` (OpenTracing API based)
+     
+  - Service Orchestration (Infrastructure Runtime)
+    - `Service Orchestration`(support hybrid deployables)
+    - `Aggregated Logging`(which enabled via attaching a sidecar log-shipper task)
+     
+  - Ops
+    - `Service Admin`
+    - `Service Allocation Status` (Hashi-ui)
+    - `Distributed Tracing Reporter`(Zipkin-ui)
+    - `Centralized Logging Reporter` (Kibana)
+    - `Java Memory Analysis`
+    - `Java Core Dump Analysis`
+    - `perf_event + flamegraph` profiling (Linux only)
+    - `wrk`
+ 
+ > Notable:
+ >
+ >    CI/CD refer to the combined practices of `continuous integration` and `continuous delivery`
+ >  
+ >    In order to keep the PoC sample as simple as possible, I didn't involve CI/CD features here. 
+
+### Spring-Boot Modules
 
 ```
 
@@ -96,7 +98,7 @@ Bird's-eye view of cloud-native platform
 
 ```
 
-## Prepare to run
+## Run the sample in standalone mode(w/o ops support)
 
 ### Start Consul (listening on port 8500)
 
@@ -193,17 +195,22 @@ or lanuch the Zipkin server via an embedded spring boot module
 
 ```
 
-
-## Run the sample in standalone approach(w/o ops support)
-
-### Command Line
+### Run the sample via Command Line
 
 ```shell
   curl -X POST "http://localhost:2809/calculator-ui/api/v1/compute" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
 
 ```
 
-### High load Run (assuming `wrk` is ready in your workstation)
+### Run the sample with High load (assuming `wrk` is ready in your workstation)
+
+calculator.lua:
+
+```lua
+wrk.method = "POST"
+wrk.headers["Content-Type"] = "application/json"
+wrk.body   = "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
+```
 
 ```shell
    wrk -t 200 -c 200 -s ./scripts/calculator.lua -d 60s --latency http://localhost:2809/calculator-ui/api/v1/compute
@@ -395,11 +402,12 @@ If we want a visual UI and execute the API with test request, just add a depende
    ```
       On Ubuntu
       
-        sudo apt-get install -y linux-tools-common
+      sudo apt-get install -y linux-tools-common
+      
    ```
 
   >
-  > I am using ubuntu with kernel below:
+  > The sample was verified on ubuntu with kernel below:
   >
   > _Linux lizh-laptop 4.4.0-72-generic #93~14.04.1-Ubuntu SMP Fri Mar 31 15:05:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux_
   
@@ -466,7 +474,7 @@ If we want a visual UI and execute the API with test request, just add a depende
 
 ## Service Scheduler/Orchestration
 
-### Building a microservcies != Running a microservices
+**Building a microservcies != Running a microservices**
 
 ### Why not kubernetes
 
@@ -526,7 +534,7 @@ There are three major vendors there, maybe four if you include HashiCorp [which 
 
 cgroup + chroot
 
-### Run the e2e sample with ops support
+### Run sample in full-feature mode(with ops support)
 
 #### Folder structure
 
@@ -662,6 +670,7 @@ run the sample, you will see the message like below:
     {"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"input":{"type":"log"},"beat":{"version":"6.4.0","name":"hello-springcloud","hostname":"hello-springcloud"},"host":{"name":"hello-springcloud"},"source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","offset":916841,"message":"[DEBUG]: [Enter]: [POST] -\u003e http://10.10.10.200:2809/calculator-ui/api/v1/compute","prospector":{"type":"log"}}
     {"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"message":"[DEBUG]: \u003e\u003e\u003e Content-Type: application/json","source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","offset":916923,"prospector":{"type":"log"},"input":{"type":"log"},"beat":{"name":"hello-springcloud","hostname":"hello-springcloud","version":"6.4.0"},"host":{"name":"hello-springcloud"}}
     {"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","prospector":{"type":"log"},"input":{"type":"log"},"beat":{"name":"hello-springcloud","hostname":"hello-springcloud","version":"6.4.0"},"host":{"name":"hello-springcloud"},"offset":916967,"message":"[DEBUG]: [Exit]: [POST] [200] \u003c- http://10.10.10.200:2809/calculator-ui/api/v1/compute"}
+    
 ```
 
 ##### Run benchmark

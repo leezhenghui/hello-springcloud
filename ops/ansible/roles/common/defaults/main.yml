@@ -1,3 +1,5 @@
 host_vars: [
   { host_ip: "10.10.10.200", host_name: "hello-springcloud"}
 ]
+
+deps_home: /vagrant/deps
