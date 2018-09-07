@@ -2,7 +2,7 @@
 
 The purpose of this repository aims to provide a hands-on architecture PoC(proof-of-concept) sample that are easy to understand and demonstrate how to **build** and **run** a `microservices architecture(MSA)` application based on the ecosystem comprises of the excellent technologies offering by `Spring-Cloud`, `Hashicorp`, `Elastic`,  `Netflix` and etc. 
 
-## Backround
+## Background
 
 The rapidly growing of the cloud confirms that more and more applications either being built upon cloud-native technology or start to do the cloud transformation, as a result, the modern applications are either built upon microservices architecture or in the period of tranditional architectures (e.g: Monolithic or SOA) to micorservices.
 
@@ -538,7 +538,13 @@ There are three major vendors there, maybe four if you include HashiCorp [which 
 
 ### Isolation techology in nomad exec/java driver
 
-cgroup + chroot
+![nomad isolation tech](./docs/architecture-nomad-isolation-tech.png)
+
+
+#### cgroup
+
+#### chroot
+
 
 ### Run sample in full-feature mode(with ops support)
 
