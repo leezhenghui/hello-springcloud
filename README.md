@@ -17,6 +17,11 @@ Bird's-eye view of cloud-native application platform
 
 ![bird's-eye view of cloud-native-platform](./docs/architecture-bird-eye-cloud-native-platform.png)
 
+Dev code checkin process
+
+![dev code checkin process](./docs/architecture-code-checkin-process.png)
+
+
 ## Microservices Landscape in Spring-Cloud ecosystem
 
 ![Ladnscape Overview](./docs/architecture-microservices-landscape.png)
