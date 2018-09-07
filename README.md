@@ -13,8 +13,9 @@ The stack of Cloud-Native-Apps(Micorservices)
 
 ![cloud-native-apps](./docs/hunyady-conf2017-slide4_cloud-native-apps.png)
 
-Bird's-eye view of cloud-native platform
+Bird's-eye view of cloud-native application platform
 
+![bird's-eye view of cloud-native-platform](./docs/architecture-bird's-eye cloud-native platform.png)
 
 ## Microservices Landscape in Spring-Cloud ecosystem
 
