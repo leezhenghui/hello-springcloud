@@ -545,6 +545,10 @@ There are three major vendors there, maybe four if you include HashiCorp [which 
 
 #### chroot
 
+[chroot](http://man7.org/linux/man-pages/man2/chroot.2.html) is an operation that allows a system to change the root directory for current processes and its children
+
+Creating separate mount namespace has an effect similar to doing a chroot(). chroot() is good, but it does not provide complete isolation, and its effects are restricted to the root mountpoint only. Creating a separate mount namespace allows each of these isolated processes to have a completely different view of the entire system’s mountpoint structure from the original one. This allows you to have a different root for each isolated process, as well as other mountpoints that are specific to those processes.
+
 
 ### Run sample in full-feature mode(with ops support)
 
