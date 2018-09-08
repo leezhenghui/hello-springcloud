@@ -482,7 +482,7 @@ If we want a visual UI and execute the API with test request, just add a depende
 
 The Microservices architecture apparently can highly reduce application complexity, but as a trade-off, it bring a high operational complexity, including an efficient runtime environment provision, service register/discovery, services orchestration/scheduler and etc. In short, **Building a microservcies != Running a microservices**. 
 
-In monoliths, frameworks make the components work together seamlessly within a process via high modularity way, in Microservices, the service orchestration(scheduler) actually abstract the details, focus on service composition, and ensure all the services which running in individual processes/nodes but still behaviors as running in a single process space. 
+In monoliths, frameworks make the components work together seamlessly within a process via high modularity way, in Microservices, the service orchestration(scheduler) actually abstract the details(e.g: complex failure modes, logging aggregation, sidecar or co-process pattern requirements, and etc), focus on service composition, and ensure all the services which running in individual processes/nodes but still behaviors as running in single node and single process space. 
 
 ### Why not kubernetes
 
