@@ -8,6 +8,16 @@ The rapidly growing of the cloud confirms that more and more applications either
 
 ![Modern Application Architecture](./docs/architecture-evolution.png)
 
+//TODO
+
+A monolithic architecture makes sense for simple, lightweight applications. But please keep in mind, If your application is working well and doesn’t need changes, then adopting microservices will offer very little benefit.
+
+//TODO, monolithic prod and cons here
+
+The microservices architecture is a better choice for complex, evolving applications despite the drawbacks and implementation challenges. Traditional monolithic application architectures do not scale anymore. The database grows too large, or there are too many millions of lines of code, or you can no longer add features. Microservices are a response to hitting the ceiling. Microservices are not a silver bullet for challenges of monolithic architecture, but they can empower your team to reach new levels of scale and agility.
+
+//TODO, MSA prod and cons here
+
 
 The stack of Cloud-Native-Apps(Micorservices)
 
@@ -17,7 +27,7 @@ Bird's-eye view of cloud-native application platform
 
 ![bird's-eye view of cloud-native-platform](./docs/architecture-bird-eye-cloud-native-platform.png)
 
-Dev code checkin process
+Small team(~8 developers) code checkin process
 
 ![dev code checkin process](./docs/architecture-code-checkin-process.png)
 
@@ -482,7 +492,7 @@ If we want a visual UI and execute the API with test request, just add a depende
 
 The Microservices architecture apparently can highly reduce application complexity, but as a trade-off, it bring a high operational complexity, including an efficient runtime environment provision, service register/discovery, services orchestration/scheduler and etc. In short, **Building a microservcies != Running a microservices**. 
 
-In monoliths, frameworks make the components work together seamlessly within a process via high modularity way, in Microservices, the service orchestration(scheduler) actually abstract the details(e.g: complex failure modes, logging aggregation, sidecar or co-process pattern requirements, and etc), focus on service composition, and ensure all the services which running in individual processes/nodes but still behaviors as running in single node and single process space. 
+In monoliths, frameworks make the components work together seamlessly within a process via high modularity way, in Microservices, the service orchestration(scheduler) actually abstract the details(e.g: complex failure modes, logging aggregation, something need run alongside "main" process which need a sidecar or co-process pattern, and etc), focus on service composition, and ensure all the services which running in individual processes/nodes but still behaviors as running in single node and single process space. 
 
 ### Why not kubernetes
 
