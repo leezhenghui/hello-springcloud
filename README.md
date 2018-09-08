@@ -550,7 +550,7 @@ There are three major vendors there, maybe four if you include HashiCorp [which 
 
 ### Isolation techology in nomad exec/java driver
 
-![nomad isolation tech](./docs/architecture-nomad-isolation-tech.png)
+![nomad isolation tech](./docs/architecture-nomad-isolation-java-driver-tech.png)
 
 
 #### cgroup
