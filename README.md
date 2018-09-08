@@ -6,6 +6,9 @@ The purpose of this repository aims to provide a hands-on architecture PoC(proof
 
 The rapidly growing of the cloud confirms that more and more applications either being built upon cloud-native technology or start to do the cloud transformation, as a result, the modern applications are either built upon microservices architecture or in the period of tranditional architectures (e.g: Monolithic or SOA) to micorservices.
 
+
+### Architecture evolution
+
 ![Modern Application Architecture](./docs/architecture-evolution.png)
 
 //TODO
@@ -19,15 +22,15 @@ The microservices architecture is a better choice for complex, evolving applicat
 //TODO, MSA prod and cons here
 
 
-The stack of Cloud-Native-Apps(Micorservices)
+### The runtime stack evolution 
 
-![cloud-native-apps](./docs/hunyady-conf2017-slide4_cloud-native-apps.png)
+![runtime-stack-evolution](./docs/architecture-runtime-stack-evolution.png)
 
-Bird's-eye view of cloud-native application platform
+### Bird's-eye view of cloud-native application platform(SaaS)
 
 ![bird's-eye view of cloud-native-platform](./docs/architecture-bird-eye-cloud-native-platform.png)
 
-Small team(~8 developers) code checkin process
+### Small team(~8 developers) code checkin process
 
 ![dev code checkin process](./docs/architecture-code-checkin-process.png)
 
