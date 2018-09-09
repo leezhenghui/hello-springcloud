@@ -55,6 +55,10 @@ The microservices architecture is a better choice for complex, evolving applicat
 
 #### Orchestration
 
+The Microservices architecture apparently can highly reduce application complexity, but as a trade-off, it bring a high operational complexity, including an efficient runtime environment provision, service register/discovery, services orchestration/scheduler and etc. In short, **Building a microservcies != Running a microservices**. 
+
+In monoliths, frameworks make the components work together seamlessly within a process via high modularity way, in Microservices, the service orchestration(scheduler) actually abstract the details(e.g: complex failure modes, logging aggregation, something need run alongside "main" process which need a sidecar or co-process pattern, and etc), focus on service composition, and ensure all the services which running in individual processes/nodes but still behaviors as running in single node and single process space. 
+
 ##### Isolation technologies
 
 ###### cgroup
@@ -76,8 +80,60 @@ Creating separate mount namespace has an effect similar to doing a chroot(). chr
 
 ##### Choice for Startup
 
-`Nomad`
+`Why not kubernetes`
 
+//TODO,
+
+Honest question - what are the kind of *startups* (not bigcos) using kubernetes/nomad etc for a real use case that warrants these things?
+Most startups have 1-2 ops people, maybe a fledgling ops team. A scheduler seems to be a huge investment at this stage.
+
+//TODO, Run Java Driver for spring-boot application
+
+//TODO, consolidate logs to centralized collector
+
+This questions is maybe more suited for the google groups.
+https://groups.google.com/forum/#!forum/nomad-tool
+
+Couple of options I can think of:
+
+Option 1:
+A docker specific way would be within the docker task to configure logging and use some of the docker supported logging drivers.
+
+https://www.nomadproject.io/docs/drivers/docker.html#logging
+https://docs.docker.com/engine/admin/logging/overview/#supported-logging-drivers
+
+Option: 2
+You can also use sidecar (filebeat or similar) container that will ship files from the alloc/logs directory and it will run in the same group as you main task.
+https://www.nomadproject.io/guides/operating-a-job/accessing-logs.html
+group "my-group" {
+  task "server" {
+    # ...
+
+    # Setting the server task as the leader of the task group allows us to
+    # signal the log shipper task to gracefully shutdown when the server exits.
+    leader = true
+  }
+
+  task "log-shipper" {
+    # ...
+  }
+}
+
+Option 3:
+You can also run filebeat or similar on the host and ship logs from all allocations on that host /var/lib/nomad/allocs//alloc/logs/.std*.
+
+
+[cloud-native-apps layers](https://www.nginx.com/blog/nginmesh-nginx-as-a-proxy-in-an-istio-service-mesh/)
+The next layer on the stack is orchestration. Once you figure out how to package – once you figure out how to get your workloads into testing – you have to deal with orchestration‑type challenges: how do you take containers and assign them to computing jobs?
+
+There are three major vendors there, maybe four if you include HashiCorp [which produces Nomad]: you have Kubernetes, Mesos, Docker Swarm, and Nomad. I would argue that, with about 40% of the market, Kubernetes is doing a good job trying to standardize that orchestration function.
+
+
+[Why not Kubernetes?](https://medium.com/@copyconstruct/schedulers-kubernetes-and-nomad-b0f2e14a896)
+[nomad and consul](https://blog.codecentric.de/en/2017/11/microservices-nomad-consul/)
+[spring-cloud with consul and nomad](https://piotrminkowski.wordpress.com/2018/04/17/deploying-spring-cloud-microservices-on-hashicorps-nomad/)
+
+//TODO
 Drivers supported in Nomad, and corresponding isolation techologies
 
 
@@ -595,70 +651,10 @@ If we want a visual UI and execute the API with test request, just add a depende
 
 //TODO
 
-## Service Scheduler/Orchestration
 
-The Microservices architecture apparently can highly reduce application complexity, but as a trade-off, it bring a high operational complexity, including an efficient runtime environment provision, service register/discovery, services orchestration/scheduler and etc. In short, **Building a microservcies != Running a microservices**. 
+## Run sample in full-feature mode(with ops support)
 
-In monoliths, frameworks make the components work together seamlessly within a process via high modularity way, in Microservices, the service orchestration(scheduler) actually abstract the details(e.g: complex failure modes, logging aggregation, something need run alongside "main" process which need a sidecar or co-process pattern, and etc), focus on service composition, and ensure all the services which running in individual processes/nodes but still behaviors as running in single node and single process space. 
-
-### Why not kubernetes
-
-//TODO,
-
-Honest question - what are the kind of *startups* (not bigcos) using kubernetes/nomad etc for a real use case that warrants these things?
-Most startups have 1-2 ops people, maybe a fledgling ops team. A scheduler seems to be a huge investment at this stage.
-
-//TODO, Run Java Driver for spring-boot application
-
-//TODO, consolidate logs to centralized collector
-
-This questions is maybe more suited for the google groups.
-https://groups.google.com/forum/#!forum/nomad-tool
-
-Couple of options I can think of:
-
-Option 1:
-A docker specific way would be within the docker task to configure logging and use some of the docker supported logging drivers.
-
-https://www.nomadproject.io/docs/drivers/docker.html#logging
-https://docs.docker.com/engine/admin/logging/overview/#supported-logging-drivers
-
-Option: 2
-You can also use sidecar (filebeat or similar) container that will ship files from the alloc/logs directory and it will run in the same group as you main task.
-https://www.nomadproject.io/guides/operating-a-job/accessing-logs.html
-group "my-group" {
-  task "server" {
-    # ...
-
-    # Setting the server task as the leader of the task group allows us to
-    # signal the log shipper task to gracefully shutdown when the server exits.
-    leader = true
-  }
-
-  task "log-shipper" {
-    # ...
-  }
-}
-
-Option 3:
-You can also run filebeat or similar on the host and ship logs from all allocations on that host /var/lib/nomad/allocs//alloc/logs/.std*.
-
-
-[cloud-native-apps layers](https://www.nginx.com/blog/nginmesh-nginx-as-a-proxy-in-an-istio-service-mesh/)
-The next layer on the stack is orchestration. Once you figure out how to package – once you figure out how to get your workloads into testing – you have to deal with orchestration‑type challenges: how do you take containers and assign them to computing jobs?
-
-There are three major vendors there, maybe four if you include HashiCorp [which produces Nomad]: you have Kubernetes, Mesos, Docker Swarm, and Nomad. I would argue that, with about 40% of the market, Kubernetes is doing a good job trying to standardize that orchestration function.
-
-
-[Why not Kubernetes?](https://medium.com/@copyconstruct/schedulers-kubernetes-and-nomad-b0f2e14a896)
-[nomad and consul](https://blog.codecentric.de/en/2017/11/microservices-nomad-consul/)
-[spring-cloud with consul and nomad](https://piotrminkowski.wordpress.com/2018/04/17/deploying-spring-cloud-microservices-on-hashicorps-nomad/)
-
-
-
-### Run sample in full-feature mode(with ops support)
-
-#### Folder structure
+### Folder structure
 
 ```
 ops
@@ -672,9 +668,9 @@ ops
 
 ```
 
-#### How to run
+### How to run
 
-##### Pack
+#### Pack
 
 To keep the sample simple, I didn't introduce a real CI dependence(e.g: usually gitlab, jenkins, etc) here. Just create a gradle `deploy` task to pack the deployables to a folder named `dist`. Later, when the VM provisioned, the `nginx` will start up and provide a http pkgs server on that folder.
 
@@ -685,7 +681,7 @@ To keep the sample simple, I didn't introduce a real CI dependence(e.g: usually 
     
 ``` 
 
-##### Launch VM
+#### Launch VM
 
 The sample is using `[vagrant](https://www.vagrantup.com/docs/installation/)` to manage the VM. Make sure you have `vagrant` installed on your host.
 
@@ -694,7 +690,7 @@ The sample is using `[vagrant](https://www.vagrantup.com/docs/installation/)` to
   
 ```
 
-##### Install&Startup all of runtime dependences
+#### Install&Startup all of runtime dependences
 
 All of runtime dependences, including common dependences, elasticsearch, filebeat, hashi-ui, JAVA-v8, kafka, kibana, logstash, nginx, nomad, wrk and zookeeper are managed via ansible, which will be initialized during VM provision. 
 
@@ -703,7 +699,7 @@ All of runtime dependences, including common dependences, elasticsearch, filebea
    
 ```
 
-##### Start all jobs
+#### Start all jobs
 
 ```shell
   vagrant ssh
@@ -712,32 +708,32 @@ All of runtime dependences, including common dependences, elasticsearch, filebea
 
 ```
 
-##### Launch Hashi-UI
+#### Launch Hashi-UI
 
 Open the browser on your host with url "http://10.10.10.200:3000"
 
-###### Cluster overview shown in Hashi-UI
+##### Cluster overview shown in Hashi-UI
 
 ![hashi-ui-cluster-overview](./docs/hashi-ui-cluster-overview.png)
 
-###### Jobs status in Hashi-UI
+##### Jobs status in Hashi-UI
 
 ![hashi-ui-jobs-overview](./docs/hashi-ui-jobs-overview.png)
 
-###### Overall allocations status in Hashi-UI
+##### Overall allocations status in Hashi-UI
 
 ![hashi-ui-alloc-overview](./docs/hashi-ui-alloc-overview.png)
 
-###### Allocation status in Hashi-UI
+##### Allocation status in Hashi-UI
 
 ![hashi-ui-alloc-detailed](./docs/hashi-ui-alloc-detailed.png)
 
-###### Consul status in Hashi-UI
+##### Consul status in Hashi-UI
 
 ![hashi-ui-consul-overview](./docs/hashi-ui-consul-overview.png)
 
 
-##### Run the sample
+#### Run the sample
 
 ```shell
    vagrant ssh
@@ -753,7 +749,7 @@ If the sample run successfully, you will see output in stdout as below:
 
 ```
 
-##### Monitor the Kafka distributed tracing topic(zipkin)
+#### Monitor the Kafka distributed tracing topic(zipkin)
 
 In this sample, only apigateway's distributed tracing is reported to kafka. Other services will report trace via HTTP protocol
 
@@ -773,7 +769,7 @@ run the sample, you will see the message like below:
 
 ```
 
-##### Monitor the Kafka aggregated logging topic(api-gateway-filebeat)
+#### Monitor the Kafka aggregated logging topic(api-gateway-filebeat)
 
 In this sample, only apigateway's aggregated logging is shipped to kafka. Other services will shipped to filebeat's stdout.
 
@@ -795,7 +791,7 @@ run the sample, you will see the message like below:
     
 ```
 
-##### Run benchmark
+#### Run benchmark
 
 ```shell
 
@@ -823,19 +819,19 @@ Requests/sec:     49.72
 
 ```
 
-##### Observe Distributed Tracing Result
+#### Observe Distributed Tracing Result
 
 Open browser on host machine with url `http://10.10.10.200:9411`
 
 ![zipkin-nomad-java-driver](./docs/zipkin-nomad-java-driver.png)
 
-##### Observe centralized logging
+#### Observe centralized logging
 
 Open browser on host machine with url `http://10.10.10.200:5601`
 
 ![kibana-centralized-logging-view](./docs/kibana-centralized-logging-view.png)
 
-##### Stop all jobs
+#### Stop all jobs
 
 ```shell
 
