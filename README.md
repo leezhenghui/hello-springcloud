@@ -158,6 +158,8 @@ Each microservice owns its data model/data
 
 #### DDD (Domain Driven Design)
 
+Today, we transform business model to IT data model in the shape of `CRUD`, `CRUD` is really general expression on the data, we need to involve so many transformations on the business model before get to the IT model, in other word, it is almost impossbile to read the IT data model to understand the business model. 
+
 #### Write (consistent challenge)
 
 ##### CAP
