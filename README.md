@@ -69,6 +69,17 @@ In monoliths, frameworks make the components work together seamlessly within a p
 
 [chroot](http://man7.org/linux/man-pages/man2/chroot.2.html) is an operation that allows a system to change the root directory for current processes and its children
 
+The chroot is a basic form of isolation at the filesystem level, with the name of the program being an abbreviation for “change root”. Essentially it changes the root of the filesystem for a one process and all child processes under it.
+
+> Alternatively, We can take another approach - `pivot_root`, however. We can copy an entire root filesystem to a new location and set the root there. This is `pivot_root`.
+> 
+> The pivot_root does the following:
+> 
+> Let’s you specify an old and new root directory
+> Copy the files from the old root directory into the new root directory
+> Make the new root directory the current root
+> This leaves the old root untouched, should any files need to be accessed.
+
 
 ##### chroot vs. namespace
 
