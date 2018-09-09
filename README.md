@@ -137,7 +137,7 @@ There are three major vendors there, maybe four if you include HashiCorp [which 
 Drivers supported in Nomad, and corresponding isolation techologies
 
 
-#### Interaction (calling among services)
+#### Interaction (calling service)
 
 
 ##### Proxy pattern
