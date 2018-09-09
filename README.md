@@ -139,6 +139,7 @@ Drivers supported in Nomad, and corresponding isolation techologies
 
 #### Interaction (calling service)
 
+Service Disovery, Adaptive Routing(Load Balance), Failure/Latency tolerance, Automatic-Retries, Observability(distributed tracing), Edger-Service gateway. 
 
 ##### Proxy pattern
 
@@ -153,7 +154,9 @@ Drivers supported in Nomad, and corresponding isolation techologies
 
 ### MSA data challenge
 
-#### DDD
+Each microservice owns its data model/data
+
+#### DDD (Domain Driven Design)
 
 #### Write (consistent challenge)
 
@@ -193,6 +196,12 @@ and c.country = 'INDONESIA';
 ### CQRS + EventSourcing
 
 #### Axon
+
+### Logging 
+
+### Centralized Logging
+
+### Log real-time analysis via Big data processing
 
 
 ## Microservices Landscape in Spring-Cloud ecosystem
