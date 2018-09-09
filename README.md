@@ -22,7 +22,7 @@ The microservices architecture is a better choice for complex, evolving applicat
 //TODO, MSA prod and cons here
 
 
-### The runtime stack evolution 
+### Runtime stack evolution 
 
 
 #### Tranditional Architecture Runtime Stack
@@ -34,6 +34,7 @@ The microservices architecture is a better choice for complex, evolving applicat
 
 ![msa-runtime-stack](./docs/architecture-msa-runtime-stack.png)
 
+
 ### Bird's-eye view of cloud-native application platform(SaaS)
 
 ![bird's-eye view of cloud-native-platform](./docs/architecture-bird-eye-cloud-native-platform.png)
@@ -41,6 +42,101 @@ The microservices architecture is a better choice for complex, evolving applicat
 ### Small team(~8 developers) code checkin process
 
 ![dev code checkin process](./docs/architecture-code-checkin-process.png)
+
+### MSA runtime challenge 
+
+#### Pack and deployment pattern
+
+##### Virtualized deployable
+
+##### Containerized deployable
+
+##### Standalone deployable
+
+#### Orchestration
+
+##### Isolation technologies
+
+###### cgroup
+
+###### namespace 
+
+###### chroot
+
+[chroot](http://man7.org/linux/man-pages/man2/chroot.2.html) is an operation that allows a system to change the root directory for current processes and its children
+
+
+##### chroot vs. namespace
+
+Creating separate mount namespace has an effect similar to doing a chroot(). chroot() is good, but it does not provide complete isolation, and its effects are restricted to the root mountpoint only. Creating a separate mount namespace allows each of these isolated processes to have a completely different view of the entire system’s mountpoint structure from the original one. This allows you to have a different root for each isolated process, as well as other mountpoints that are specific to those processes.
+
+##### Lightweight Isolation techology(cgroup + chroot) 
+
+![nomad isolation tech](./docs/architecture-nomad-isolation-java-driver-tech.png)
+
+##### Choice for Startup
+
+`Nomad`
+
+Drivers supported in Nomad, and corresponding isolation techologies
+
+
+#### Interaction (calling among services)
+
+
+##### Proxy pattern
+
+
+##### RPC router pattern
+
+###### Spring-Cloud
+
+###### go-micro
+
+##### Fabric pattern(Service Mesh)
+
+### MSA data challenge
+
+#### DDD
+
+#### Write (consistent challenge)
+
+##### CAP
+
+##### TCC
+
+##### Saga
+
+##### Event driven architecture
+
+###### Local TX based event
+
+###### oplog tail
+
+###### Event table (polling at consumer side)
+
+###### 2PC MQ(RocketMQ)
+
+###### Event Sourcing
+
+Event sourcing is good for a system that needs audit trail and time travel. If the system in question needs only basic decoupling from a larger system, event-driven design is probably a better option.
+
+#### Read
+
+```sql
+select * from order o, customer c
+where o.customer_id = c.id
+and o.gross_amount > 50000
+and o.status = 'PAID'
+and c.country = 'INDONESIA';
+
+```
+
+#### CQRS 
+
+### CQRS + EventSourcing
+
+#### Axon
 
 
 ## Microservices Landscape in Spring-Cloud ecosystem
@@ -558,22 +654,6 @@ There are three major vendors there, maybe four if you include HashiCorp [which 
 [nomad and consul](https://blog.codecentric.de/en/2017/11/microservices-nomad-consul/)
 [spring-cloud with consul and nomad](https://piotrminkowski.wordpress.com/2018/04/17/deploying-spring-cloud-microservices-on-hashicorps-nomad/)
 
-
-### Isolation techology in nomad exec/java driver
-
-![nomad isolation tech](./docs/architecture-nomad-isolation-java-driver-tech.png)
-
-
-#### cgroup
-
-#### chroot
-
-[chroot](http://man7.org/linux/man-pages/man2/chroot.2.html) is an operation that allows a system to change the root directory for current processes and its children
-
-
-##### chroot vs. namespace
-
-Creating separate mount namespace has an effect similar to doing a chroot(). chroot() is good, but it does not provide complete isolation, and its effects are restricted to the root mountpoint only. Creating a separate mount namespace allows each of these isolated processes to have a completely different view of the entire system’s mountpoint structure from the original one. This allows you to have a different root for each isolated process, as well as other mountpoints that are specific to those processes.
 
 
 ### Run sample in full-feature mode(with ops support)
