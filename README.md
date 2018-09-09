@@ -24,7 +24,15 @@ The microservices architecture is a better choice for complex, evolving applicat
 
 ### The runtime stack evolution 
 
-![runtime-stack-evolution](./docs/architecture-runtime-stack-evolution.png)
+
+#### Tranditional Architecture Runtime Stack
+
+![tranditional-runtime-stack](./docs/architecture-tranditional-runtime-stack.png)
+
+
+#### MSA Runtime Stack
+
+![msa-runtime-stack](./docs/architecture-msa-runtime-stack.png)
 
 ### Bird's-eye view of cloud-native application platform(SaaS)
 
