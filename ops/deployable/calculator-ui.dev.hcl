@@ -221,7 +221,7 @@ job "calculator-ui-job" {
       # }
 			config {
 				command = "java"
-				args = ["-Xmx512m", "-Xms128m", "-Dspring.profiles.active=dev", "-jar", "local/calculator.ui-1.0.0.jar"]
+				args = ["-Xmx512m", "-Xms128m", "-Dspring.profiles.active=dev", "-XX:-UseGCLogFileRotation", "-XX:GCLogFileSize=20M", "-XX:NumberOfGCLogFiles=1", "-Xloggc:${NOMAD_ALLOC_DIR}/logs/calculator-ui-gc.log", "-jar", "local/calculator.ui-1.0.0.jar"]
 			}   
 
       # The "artifact" stanza instructs Nomad to download an artifact from a

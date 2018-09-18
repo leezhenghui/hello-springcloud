@@ -461,7 +461,6 @@ Tools: `jmap` and [ibm-heap-analyzer](https://www.ibm.com/developerworks/communi
 
 ```
 jmap -dump:format=b,file=./heapdmp-calculator.ui-5258.bin 5258
-
 ```
 
 2. Open the heap dump file(`heapdmp-calculator.ui-5258.bin`) with `ibm-heap-analyzer`
@@ -472,7 +471,6 @@ java -Xmx4g -jar ha456.jar
 ```
 
 - Result:
-
 ![ibm-heap-analyzer](docs/ibm-heap-analyzer.png)
 
 ### Core-dump Analysis
