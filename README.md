@@ -455,13 +455,7 @@ If we want a visual UI and execute the API with test request, just add a depende
 
 Tools: `jmap` and [ibm-heap-analyzer](https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=4544bafe-c7a2-455f-9d43-eb866ea60091)
 
-Steps:
-
-1. Generate a heap dump
-
-```
-
-Steps:
+-  Steps:
 
 1. Generate a heap dump for a java process(e.g: pid 5258)
 
@@ -477,7 +471,8 @@ cd <ibm-ha_home>
 java -Xmx4g -jar ha456.jar 
 ```
 
-Result:
+- Result:
+
 ![ibm-heap-analyzer](docs/ibm-heap-analyzer.png)
 
 ### Core-dump Analysis
