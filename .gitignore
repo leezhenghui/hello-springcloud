@@ -9,6 +9,7 @@
 .gradletasknamecache
 ops/ubuntu-xenial-16.04-cloudimg-console.log
 ops/.vagrant
+ops/**/*.nmon
 # ops/deps/kibana-6.4.0-linux-x86_64.tar.gz
 # ops/deps/logstash-6.4.0.zip
 ops/deps/
