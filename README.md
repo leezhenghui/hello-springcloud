@@ -15,31 +15,32 @@ The purpose of this repository aims to provide a hands-on architecture PoC(proof
 The PoC sample pursue to cover below functionalities:
  
  - Dev
-    - `APIDoc`(Swagger based)
-    - `TDD`
-    - `Code Branch Management`
+    - APIDoc(Swagger based)
+    - TDD
+    - Environemnt typed configuration(Spring profiles)
     
  - Service Interconnectivity(Application/Infrastructure Runtime)
-    - `API-Gateway`(Edger service)
-    - `Service Discovery`
-    - `Intra-Communication Load Balance` (Private service)
-    - `Circuit Breakers`
-    - `Intelligent Routing`
-    - `Distributed Tracing Instrumentation` (OpenTracing API based)
+    - API-Gateway(Edger service)
+    - Service Discovery
+    - Intra-Communication Load Balance (Private service)
+    - Circuit Breakers
+    - Intelligent Routing
+    - Distributed Tracing Instrumentation(OpenTracing API based)
      
   - Service Orchestration (Infrastructure Runtime)
-    - `Service Orchestration`(support hybrid deployables)
-    - `Aggregated Logging`(which enabled via attaching a sidecar log-shipper task)
+    - Service Orchestration(support hybrid deployables)
+    - Aggregated Logging(which enabled via attaching a sidecar log-shipper task)
      
   - Ops
-    - `Service Admin`
-    - `Service Allocation Status` (Hashi-ui)
-    - `Distributed Tracing Reporter`(Zipkin-ui)
-    - `Centralized Logging Reporter` (Kibana)
-    - `Java Memory Analysis`
-    - `Java Core Dump Analysis`
-    - `perf_event + flamegraph` profiling (Linux only)
-    - `wrk`
+    - Service Admin
+    - Service Allocation Status(Hashi-ui)
+    - Distributed Tracing Reporter(Zipkin-ui)
+    - Centralized Logging Reporter (Kibana)
+    -  nmon system sampling 
+    - Java Memory Analysis
+    - Java Core Dump Analysis
+    - perf\_event + flamegraph profiling (Linux only)
+    - wrk
  
  > Notable:
  >
@@ -207,7 +208,7 @@ wrk.body   = "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
 
 ### Scenario
 
-![Scenario](./docs/architecture-circuit-breaker.png)
+![Scenario](./docs/architecture-circuit-breaker-springcloud-poc.png)
 
 
 ### Hystrix
