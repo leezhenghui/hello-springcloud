@@ -90,24 +90,22 @@ The PoC sample pursue to cover below functionalities:
 ### Start Consul (listening on port 8500)
 
 ```shell
-  cd <CONSUL_HOME>
-  ./bin/consul agent -dev
+cd <CONSUL_HOME>
+./bin/consul agent -dev
 ```
 
 ### Start Zookeeper and Kafka(bootstrap port 9092)
 
 ```shell
-  cd <KAFKA_1.0_HOME>
-  ./bin/zookeeper-server-start.sh ./config/zookeeper.properties
-  ./bin/kafka-server-start.sh ./config/server.properties
-
+cd <KAFKA_1.0_HOME>
+./bin/zookeeper-server-start.sh ./config/zookeeper.properties
+./bin/kafka-server-start.sh ./config/server.properties
 ```
 
 In this sample, the `api-gateway` distributed tracing will be reported to Kafka topic `zipkin`, we can monitor that topic and verify the result:
 
 ```shell
-  ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic zipkin
-  
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic zipkin
 ```
 
 ### Start Zipkin Server(web-ui listening on port 9411)
@@ -115,10 +113,9 @@ In this sample, the `api-gateway` distributed tracing will be reported to Kafka 
 Either start Zipkin by Zipkin binary
 
 ```shell
- cd <ZIPKIN_SRC_HOME>
- ./mvnw -DskipTests --also-make -pl zipkin-server clean install
- KAFKA_BOOTSTRAP_SERVERS=localhost:9092 java -jar ./zipkin-server/target/zipkin-server-2.11.2-SNAPSHOT-exec.jar
-
+cd <ZIPKIN_SRC_HOME>
+./mvnw -DskipTests --also-make -pl zipkin-server clean install
+KAFKA_BOOTSTRAP_SERVERS=localhost:9092 java -jar ./zipkin-server/target/zipkin-server-2.11.2-SNAPSHOT-exec.jar
 ```
 
  > 
@@ -128,65 +125,56 @@ Either start Zipkin by Zipkin binary
 or lanuch the Zipkin server via an embedded spring boot module
 
 ```shell
-   cd modules/zipkin.server
-
-   spring bootRun
-
+cd modules/zipkin.server
+spring bootRun
 ```
 
 ### Start Spring-Boot-Admin(listening on port 9080)
 
 ```shell
-  cd modules/springboot.admin
-  gradle bootRun
-
+cd modules/springboot.admin
+gradle bootRun
 ```
 
 ### Start Turbine Aggration Server(listening on port 9090)
 
 ```shell
-  cd modules/springboot.admin
-  gradle bootRun
-
+cd modules/springboot.admin
+gradle bootRun
 ```
 
 ### Start api-gateway (listening on port 2809)
 
 ```shell
-  cd modules/api.gateway
-  gradle bootRun
-
+cd modules/api.gateway
+gradle bootRun
 ```
 
 ### Start add service (dynamical port) 
 
 ```shell
-  cd modules/add.svc
-  gradle bootRun
-
+cd modules/add.svc
+gradle bootRun
 ```
 
 ### Start subtract service (dynamical port) 
 
 ```shell
-  cd modules/sub.svc
-  gradle bootRun
-
+cd modules/sub.svc
+gradle bootRun
 ```
 
 ### Start calculator-ui service (dynamical port) 
 
 ```shell
-  cd modules/calculator.ui
-  gradle bootRun
-
+cd modules/calculator.ui
+gradle bootRun
 ```
 
 ### Run the sample via Command Line
 
 ```shell
-  curl -X POST "http://localhost:2809/calculator-ui/api/v1/compute" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
-
+curl -X POST "http://localhost:2809/calculator-ui/api/v1/compute" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
 ```
 
 ### Run the sample with High load (assuming `wrk` is ready in your workstation)
@@ -223,11 +211,10 @@ wrk.body   = "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
 ### Turbine Aggregation
 
 ```
-   - Open browser and input url  http://localhost:9090/hystrix
-   - Input dashboard stream url as below: 
-        [1] http://localhost:9090/turbine.stream?cluster=api-gateway
-        [2] http://localhost:9090/turbine.stream?cluster=calculator-ui
-  
+  - Open browser and input url  http://localhost:9090/hystrix
+  - Input dashboard stream url as below: 
+    [1] http://localhost:9090/turbine.stream?cluster=api-gateway
+    [2] http://localhost:9090/turbine.stream?cluster=calculator-ui
 ```
 
 ![hystrix-turbine-apigateway](./docs/hystrix-turbine-1.png)
@@ -362,13 +349,13 @@ To generate swagger document, [springfox](https://springfox.github.io/springfox/
 Access it via:
 
 ```
-    http://<hostname>:<port>/v2/api-docs
+http://<hostname>:<port>/v2/api-docs
 ```
 
 If we want a visual UI and execute the API with test request, just add a dependence to `springfox-swagger-ui`. and open below link in browser:
 
 ```
-    http://<hostname>:<port>/swagger-ui.html
+http://<hostname>:<port>/swagger-ui.html
 ```
 
 ![apidocs-swagger](./docs/apidoc-swagger-1.png)
@@ -386,12 +373,10 @@ If we want a visual UI and execute the API with test request, just add a depende
 
 - Have perf_event tool installed on your linux environment
 
-   ```
-      On Ubuntu
-      
-      sudo apt-get install -y linux-tools-common
-      
-   ```
+```
+# On Ubuntu
+sudo apt-get install -y linux-tools-common
+```
 
   >
   > The sample was verified on ubuntu with kernel below:
@@ -399,54 +384,54 @@ If we want a visual UI and execute the API with test request, just add a depende
   > _Linux lizh-laptop 4.4.0-72-generic #93~14.04.1-Ubuntu SMP Fri Mar 31 15:05:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux_
   
 - Using JDKv8(>=v8u60) or JDKv9 to support `-XX:+PreserveFramePointer`
-  ```
-    $ java -version
-    java version "1.8.0_60"
-    Java(TM) SE Runtime Environment (build 1.8.0_60-b27)
-    Java HotSpot(TM) 64-Bit Server VM (build 25.60-b23, mixed mode)
-  ```
+```
+$ java -version
+java version "1.8.0_60"
+Java(TM) SE Runtime Environment (build 1.8.0_60-b27)
+Java HotSpot(TM) 64-Bit Server VM (build 25.60-b23, mixed mode)
+```
 - Set JAVA_HOME properly
-  ```
-    export JAVA_HOME=<YOUR_JDK_HOME>
-  ```
+```
+export JAVA_HOME=<YOUR_JDK_HOME>
+```
 - Install [perf-map-agent](https://github.com/jrudolph/perf-map-agent)
 
   `perf-map-agent` is the instrument tool to translate the `Java Symbols` for `perf_event`, that means perf_event will read the map to unerstand the `VMA`(Virutal Memory Address) to corresponding Java symbols, and generate a human readble report 
-  ```
-     sudo apt-get install -y cmake    
-     git clone https://github.com/jrudolph/perf-map-agent
-     cd perf-map-agent
-     cmake .
-     make
-  ```
+```
+sudo apt-get install -y cmake    
+git clone https://github.com/jrudolph/perf-map-agent
+cd perf-map-agent
+cmake .
+make
+```
   `attach-main.jar` and `libperfmap.so` get compiled in the out folder
 - Create command links in `<HOME>/bin`
-  ```
-     cd <perf-map-agent_HOME>/bin
-     ./create-links-in <HOME>/bin
-  ```
+```
+cd <perf-map-agent_HOME>/bin
+./create-links-in <HOME>/bin
+```
   A soft link for `perf-java-flames` command will be created in `<HOME>/bin`, so we can use this command anywhere without the need of full path specified.
 - Install [FlameGraph](https://github.com/brendangregg/FlameGraph)
-  ```
-     git clone https://github.com/brendangregg/FlameGraph
-     export FLAMEGRAPH_DIR=<FlameGraph_HOME>
-  ```
+```
+git clone https://github.com/brendangregg/FlameGraph
+export FLAMEGRAPH_DIR=<FlameGraph_HOME>
+```
 
 #### Profiling Java(on-cpu-sampling)
 
 - Run Java process with `-XX:+PreserveFramePointer`, e.g:
-  ```
-     cd <modules>/calculator.ui
-     java -XX:+PreserveFramePointer -jar ./out/libs/calculator.ui-1.0.0.jar
-  ```
+```
+cd <modules>/calculator.ui
+java -XX:+PreserveFramePointer -jar ./out/libs/calculator.ui-1.0.0.jar
+```
 - Check it is enabled(on Linux)
-  ```
-    ps wwp `pgrep -n java` | grep PreserveFramePointer
-  ```
+```
+ps wwp `pgrep -n java` | grep PreserveFramePointer
+```
 - Profiling and generate flamegraph for the Java process
-  ```
-     perf-java-flames <pid>
-  ```
+```
+perf-java-flames <pid>
+```
 
 - Sample result
 ![flamegraph-sample](./docs/flamegraph-calculator-ui.svg)
@@ -500,9 +485,9 @@ ops
 To keep the sample simple, I didn't introduce a real CI dependence(e.g: usually gitlab, jenkins, etc) here. Just create a gradle `deploy` task to pack the deployables to a folder named `dist`. Later, when the VM provisioned, the `nginx` will start up and provide a http pkgs server on that folder.
 
 ```shell
-    cd <hello_springcloud_home>
-    gradle clean build
-    gradle deploy
+cd <hello_springcloud_home>
+gradle clean build
+gradle deploy
 ``` 
 
 #### Launch VM
@@ -510,7 +495,7 @@ To keep the sample simple, I didn't introduce a real CI dependence(e.g: usually 
 The sample is using `[vagrant](https://www.vagrantup.com/docs/installation/)` to manage the VM. Make sure you have `vagrant` installed on your host.
 
 ```shell
-  vagrant up
+vagrant up
 ```
 
 #### Install&Startup all of runtime dependences
@@ -518,15 +503,15 @@ The sample is using `[vagrant](https://www.vagrantup.com/docs/installation/)` to
 All of runtime dependences, including common dependences, elasticsearch, filebeat, hashi-ui, JAVA-v8, kafka, kibana, logstash, nginx, nomad, wrk and zookeeper are managed via ansible, which will be initialized during VM provision. 
 
 ```shell
-   vagrant provision
+vagrant provision
 ```
 
 #### Start all jobs
 
 ```shell
-  vagrant ssh
-  cd /vagrant/bin
-  ./start_all_jobs.sh
+vagrant ssh
+cd /vagrant/bin
+./start_all_jobs.sh
 ```
 
 #### Launch Hashi-UI
@@ -643,9 +628,7 @@ Open browser on host machine with url `http://10.10.10.200:5601`
 #### Stop all jobs
 
 ```shell
-
-  vagrant ssh
-  cd /vagrant/bin
-  ./stop_all_jobs.sh
-  
+vagrant ssh
+cd /vagrant/bin
+./stop_all_jobs.sh
 ```
