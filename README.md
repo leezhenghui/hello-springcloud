@@ -465,6 +465,7 @@ java -Xmx4g -jar ha456.jar
 To enable signal-based Java Heap dumps, the `IBM_HEAPDUMP=TRUE` environmental variable or the appropriate `JAVA_DUMP_OPTS` must be set.  e.g:
 
 ```
+# Manually trigger a heap dump by sending a specific signal to JVM
 IBM_HEAPDUMP=TRUE ~/opt/ibm-jdk-1.8.0/bin/java -jar ./add.svc-1.0.0.jar # the pid is 21046
 kill -3 21046
 ```
@@ -480,7 +481,7 @@ JVMDUMP010I Heap dump written to heapdump.20180918.195336.21046.0001.phd
 
 ### Core-dump Analysis
 
-- If you are using Oracle JDK, we do the thread(core) dump following below steps on Linux:
+- Oracle JVM, we commonly have 3 methods for the thread(core) dump on Linux:
 
 1. Method-1
 ```
@@ -506,7 +507,7 @@ jstack -l -m -F <pid>
 kill -3 <pid> # print the dump info in the java process stdout
 ```
 
-- In IBM JVM, the core dump file contains much more contents, and we can use [IBM Thread and Monitor Dump Analyzer](https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=2245aa39-fa5c-4475-b891-14c205f7333c) for the analysis
+- For IBM JVM, the core dump file contains much more contents, and we can use [IBM Thread and Monitor Dump Analyzer](https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=2245aa39-fa5c-4475-b891-14c205f7333c) for the analysis
 
 ```
 # Manually trigger a javacore dump by sending a specific signal to JVM
