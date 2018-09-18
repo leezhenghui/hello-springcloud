@@ -491,7 +491,6 @@ ops
 ├── deps          // binary dependences, which cache it locally to reduce(avoid) network deps during demonstration
 ├── dist          // pkgs publish folder, nginx is started on this folder to simulate a pkg repository
 └── log-shipper   // filebeat conf for log-shipper side-task
-
 ```
 
 ### How to run
@@ -504,7 +503,6 @@ To keep the sample simple, I didn't introduce a real CI dependence(e.g: usually 
     cd <hello_springcloud_home>
     gradle clean build
     gradle deploy
-    
 ``` 
 
 #### Launch VM
@@ -513,7 +511,6 @@ The sample is using `[vagrant](https://www.vagrantup.com/docs/installation/)` to
 
 ```shell
   vagrant up
-  
 ```
 
 #### Install&Startup all of runtime dependences
@@ -522,7 +519,6 @@ All of runtime dependences, including common dependences, elasticsearch, filebea
 
 ```shell
    vagrant provision
-   
 ```
 
 #### Start all jobs
@@ -531,7 +527,6 @@ All of runtime dependences, including common dependences, elasticsearch, filebea
   vagrant ssh
   cd /vagrant/bin
   ./start_all_jobs.sh
-
 ```
 
 #### Launch Hashi-UI
@@ -562,17 +557,15 @@ Open the browser on your host with url "http://10.10.10.200:3000"
 #### Run the sample
 
 ```shell
-   vagrant ssh
-   cd /vagrant/bin
-   ./click.sh
+vagrant ssh
+cd /vagrant/bin
+./click.sh
 ```
 
 If the sample run successfully, you will see output in stdout as below:
 
 ```json
-
 {"result":9}
-
 ```
 
 #### Monitor the Kafka distributed tracing topic(zipkin)
@@ -580,19 +573,15 @@ If the sample run successfully, you will see output in stdout as below:
 In this sample, only apigateway's distributed tracing is reported to kafka. Other services will report trace via HTTP protocol
 
 ```shell
-
-   vagrant ssh
-   cd /vagrant/bin
-   ./kafka-zipkin-topic-monitor.sh
-
+vagrant ssh
+cd /vagrant/bin
+./kafka-zipkin-topic-monitor.sh
 ```
 
 run the sample, you will see the message like below:
 
 ```json
-
-    [{"traceId":"ebe29e701126f8a2","parentId":"ebe29e701126f8a2","id":"499be36840d38ffb","name":"post","timestamp":1536129010924681,"duration":32367,"localEndpoint":{"serviceName":"api-gateway","ipv4":"10.0.2.15"},"tags":{"component":"zuul","http.status_code":"200"}},{"traceId":"ebe29e701126f8a2","id":"ebe29e701126f8a2","kind":"SERVER","name":"post","timestamp":1536129010924004,"duration":34677,"localEndpoint":{"serviceName":"api-gateway","ipv4":"10.0.2.15"},"tags":{"component":"java-web-servlet","http.method":"POST","http.status_code":"200","http.url":"http://10.10.10.200:2809/calculator-ui/api/v1/compute"}}]
-
+[{"traceId":"ebe29e701126f8a2","parentId":"ebe29e701126f8a2","id":"499be36840d38ffb","name":"post","timestamp":1536129010924681,"duration":32367,"localEndpoint":{"serviceName":"api-gateway","ipv4":"10.0.2.15"},"tags":{"component":"zuul","http.status_code":"200"}},{"traceId":"ebe29e701126f8a2","id":"ebe29e701126f8a2","kind":"SERVER","name":"post","timestamp":1536129010924004,"duration":34677,"localEndpoint":{"serviceName":"api-gateway","ipv4":"10.0.2.15"},"tags":{"component":"java-web-servlet","http.method":"POST","http.status_code":"200","http.url":"http://10.10.10.200:2809/calculator-ui/api/v1/compute"}}]
 ```
 
 #### Monitor the Kafka aggregated logging topic(api-gateway-filebeat)
@@ -600,31 +589,25 @@ run the sample, you will see the message like below:
 In this sample, only apigateway's aggregated logging is shipped to kafka. Other services will shipped to filebeat's stdout.
 
 ```shell
-
-   vagrant ssh
-   cd /vagrant/bin
-   ./kafka-filebeat-topic-monitor.sh
-
+vagrant ssh
+cd /vagrant/bin
+./kafka-filebeat-topic-monitor.sh
 ```
 
 run the sample, you will see the message like below:
 
 ```
-
-    {"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"input":{"type":"log"},"beat":{"version":"6.4.0","name":"hello-springcloud","hostname":"hello-springcloud"},"host":{"name":"hello-springcloud"},"source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","offset":916841,"message":"[DEBUG]: [Enter]: [POST] -\u003e http://10.10.10.200:2809/calculator-ui/api/v1/compute","prospector":{"type":"log"}}
-    {"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"message":"[DEBUG]: \u003e\u003e\u003e Content-Type: application/json","source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","offset":916923,"prospector":{"type":"log"},"input":{"type":"log"},"beat":{"name":"hello-springcloud","hostname":"hello-springcloud","version":"6.4.0"},"host":{"name":"hello-springcloud"}}
-    {"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","prospector":{"type":"log"},"input":{"type":"log"},"beat":{"name":"hello-springcloud","hostname":"hello-springcloud","version":"6.4.0"},"host":{"name":"hello-springcloud"},"offset":916967,"message":"[DEBUG]: [Exit]: [POST] [200] \u003c- http://10.10.10.200:2809/calculator-ui/api/v1/compute"}
-    
+{"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"input":{"type":"log"},"beat":{"version":"6.4.0","name":"hello-springcloud","hostname":"hello-springcloud"},"host":{"name":"hello-springcloud"},"source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","offset":916841,"message":"[DEBUG]: [Enter]: [POST] -\u003e http://10.10.10.200:2809/calculator-ui/api/v1/compute","prospector":{"type":"log"}}
+{"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"message":"[DEBUG]: \u003e\u003e\u003e Content-Type: application/json","source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","offset":916923,"prospector":{"type":"log"},"input":{"type":"log"},"beat":{"name":"hello-springcloud","hostname":"hello-springcloud","version":"6.4.0"},"host":{"name":"hello-springcloud"}}
+{"@timestamp":"2018-09-05T06:34:20.283Z","@metadata":{"beat":"filebeat","type":"doc","version":"6.4.0","topic":"api-gateway-filebeat"},"source":"/data/nomad/data/alloc/c24d5f7a-c476-9aec-da51-6274a8e990e5/alloc/logs/api-gateway-task.stdout.0","prospector":{"type":"log"},"input":{"type":"log"},"beat":{"name":"hello-springcloud","hostname":"hello-springcloud","version":"6.4.0"},"host":{"name":"hello-springcloud"},"offset":916967,"message":"[DEBUG]: [Exit]: [POST] [200] \u003c- http://10.10.10.200:2809/calculator-ui/api/v1/compute"}
 ```
 
 #### Run benchmark
 
 ```shell
-
-   vagrant ssh
-   cd /vagrant/bin
-   ./benchmark.sh
-
+vagrant ssh
+cd /vagrant/bin
+./benchmark.sh
 ```
 
 Output:
