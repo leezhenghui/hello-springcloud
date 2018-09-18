@@ -625,7 +625,7 @@ Running 1m test @ http://localhost:2809/calculator-ui/api/v1/compute
   2985 requests in 1.00m, 437.76KB read
 Requests/sec:     49.72
 ```
-The `nmon` command running in background to do the sampling, the overall system performance analysis result is **[nmon analysis result](./docs/hello-springcloud_180918_0439.nmon.xlsx)**
+The `nmon` command running in background to do the sampling, the overall system performance analysis result is **[hello-springcloud_180918_0439.nmon.xlsx](./docs/hello-springcloud_180918_0439.nmon.xlsx)**
 
 #### Observe Distributed Tracing Result
 
