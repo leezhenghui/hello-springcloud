@@ -1,3 +1,9 @@
+- name: nmon is present
+  apt:
+    name: nmon 
+    force: yes
+  tags: [benchmark]
+
 - name: check wrk home folder stat
   stat: path={{ wrk_home }}
   register: wrk_home_stat
@@ -8,7 +14,7 @@
     dest: "{{ wrk_home }}"
   register: wrk_was_downloaded
   when: wrk_home_stat.stat.exists == False
-  tags: [wrk]
+  tags: [benchmark]
 
 - name: check wrk stat
   stat: path={{ wrk_home }}/wrk
@@ -17,10 +23,10 @@
 - name: build wrk
   shell: "cd {{ wrk_home }} && make clean && make "
   when: wrk__stat.stat.exists == False
-  tags: [wrk]
+  tags: [benchmark]
 
 - name: copy the nginx config file and restart nginx
   copy:
     src:  "{{ wrk_post_script }}" 
     dest: "{{ wrk_home }}/scripts" 
-  tags: [wrk]
+  tags: [benchmark]
