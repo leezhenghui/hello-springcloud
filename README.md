@@ -460,8 +460,45 @@ java -Xmx4g -jar ha456.jar
 
 ### Core-dump Analysis
 
-//TODO
+- If you are using Oracle JDK, we do the thread(core) dump following below steps on Linux:
 
+1. Method-1
+```
+# make you have gdb installed, which provides gcore command to do the core dump
+gcore <java pid> # e.g: pid: 7737
+jstack -m -l `which java` ./core.7737 > java-7737.core
+```
+Reulst: [java-7737.core](docs/java-7737.core)
+> Note:
+>
+> Before use gcore generate core dump, please run the `ulimit -c` command to check or set the core file size limit. Make sure that the limit is set to `unlimited`; otherwise the core file could be truncated
+
+2.  Method-2
+You can use jstack to attach to the running java program for the thread dump
+```
+jstack -l -m -F <pid>
+```
+
+3.  Method-3
+```
+kill -3 <pid> # print the dump info in the java process stdout
+```
+
+- In IBM JVM, the core dump file contains much more contents, and we can use [IBM Thread and Monitor Dump Analyzer](https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=2245aa39-fa5c-4475-b891-14c205f7333c) for the analysis
+
+```
+# trigger the javacore dump by sending a specific signal to JVM
+kill -3 <pid>
+```
+
+JVM log will point you to the location of javacore dump
+```
+JVMDUMP039I Processing dump event "user", detail "" at 2018/09/18 18:24:03 - please wait.
+JVMDUMP032I JVM requested Java dump using 'javacore.20180918.182403.10902.0001.txt' in response to an event
+JVMDUMP010I Java dump written to javacore.20180918.182403.10902.0001.txt
+JVMDUMP013I Processed dump event "user", detail "".
+```
+Result: ![ibm-coredump-analyzer](docs/ibm-core-analyzer.png)
 
 ## Run sample in full-feature mode(with ops support)
 
