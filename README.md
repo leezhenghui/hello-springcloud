@@ -438,25 +438,45 @@ perf-java-flames <pid>
 
 ### Heap Analysis
 
+- Oracle JVM
+
 Tools: `jmap` and [ibm-heap-analyzer](https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=4544bafe-c7a2-455f-9d43-eb866ea60091)
 
--  Steps:
+  -  Steps:
 
-1. Generate a heap dump for a java process(e.g: pid 5258)
+    1. Generate a heap dump for a java process(e.g: pid 5258)
 
 ```
 jmap -dump:format=b,file=./heapdmp-calculator.ui-5258.bin 5258
 ```
 
-2. Open the heap dump file(`heapdmp-calculator.ui-5258.bin`) with `ibm-heap-analyzer`
+    2. Open the heap dump file(`heapdmp-calculator.ui-5258.bin`) with `ibm-heap-analyzer`
 
 ```
 cd <ibm-ha_home>
 java -Xmx4g -jar ha456.jar 
 ```
 
-- Result:
-![ibm-heap-analyzer](docs/ibm-heap-analyzer.png)
+ - Result:
+ ![oracle-jdk-heapdump](docs/ibm-heap-analyzer.png)
+
+- IBM JVM
+
+To enable signal-based Java Heap dumps, the `IBM_HEAPDUMP=TRUE` environmental variable or the appropriate `JAVA_DUMP_OPTS` must be set.  e.g:
+
+```
+IBM_HEAPDUMP=TRUE ~/opt/ibm-jdk-1.8.0/bin/java -jar ./add.svc-1.0.0.jar # the pid is 21046
+kill -3 21046
+```
+
+The heapdump file location will be printed in the java process stdout
+
+```
+JVMDUMP032I JVM requested Heap dump using 'heapdump.20180918.195336.21046.0001.phd' in response to an event
+JVMDUMP010I Heap dump written to heapdump.20180918.195336.21046.0001.phd
+```
+
+![ibm-jdk-heapdump](docs/ibm-jdk-heapdump-analyzer.png)
 
 ### Core-dump Analysis
 
