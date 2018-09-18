@@ -464,14 +464,16 @@ java -Xmx4g -jar ha456.jar
 
 1. Method-1
 ```
-# make you have gdb installed, which provides gcore command to do the core dump
+# make you have gdb installed, which provides gcore command to do the core dump.
 gcore <java pid> # e.g: pid: 7737
 jstack -m -l `which java` ./core.7737 > java-7737.core
 ```
-Reulst: [java-7737.core](docs/java-7737.core)
+Result: [java-7737.core](docs/java-7737.core)
 > Note:
 >
 > Before use gcore generate core dump, please run the `ulimit -c` command to check or set the core file size limit. Make sure that the limit is set to `unlimited`; otherwise the core file could be truncated
+>
+> `jstack <executable> <core>` also usually be used in postmortem situation 
 
 2.  Method-2
 You can use jstack to attach to the running java program for the thread dump
@@ -487,7 +489,7 @@ kill -3 <pid> # print the dump info in the java process stdout
 - In IBM JVM, the core dump file contains much more contents, and we can use [IBM Thread and Monitor Dump Analyzer](https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=2245aa39-fa5c-4475-b891-14c205f7333c) for the analysis
 
 ```
-# trigger the javacore dump by sending a specific signal to JVM
+# Manually trigger a javacore dump by sending a specific signal to JVM
 kill -3 <pid>
 ```
 
