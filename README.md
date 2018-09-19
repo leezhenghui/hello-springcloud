@@ -368,7 +368,7 @@ http://<hostname>:<port>/swagger-ui.html
 
 ### Run `wrk` to trigger the benchmark tests, and  turn on `nmon` to collect the basic system profiling data 
 
-The `nmon` command running in background to do the overall system profiling, below is an example of  performance analysis result translate from `nmon` profiling data: **[hello-springcloud_180918_0439.nmon.xlsx](./docs/hello-springcloud_180918_0439.nmon.xlsx)**
+The `nmon` command running in background to do the overall system profiling, below is an example of visualized performance analysis result(charts in spreadsheet) translated from `nmon` profiling data: **[hello-springcloud_180918_0439.nmon.xlsx](./docs/hello-springcloud_180918_0439.nmon.xlsx)**
 
 ### FlameGraph with Perf_Event (Linux only)
 
@@ -376,66 +376,64 @@ The `nmon` command running in background to do the overall system profiling, bel
 
 - Have perf_event tool installed on your linux environment
 
-```
-# On Ubuntu
-sudo apt-get install -y linux-tools-common
-```
-
+	```
+  # On Ubuntu
+	sudo apt-get install -y linux-tools-common
+	```
   >
   > The sample was verified on ubuntu with kernel below:
   >
   > _Linux lizh-laptop 4.4.0-72-generic #93~14.04.1-Ubuntu SMP Fri Mar 31 15:05:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux_
   
 - Using JDKv8(>=v8u60) or JDKv9 to support `-XX:+PreserveFramePointer`
-```
-$ java -version
-java version "1.8.0_60"
-Java(TM) SE Runtime Environment (build 1.8.0_60-b27)
-Java HotSpot(TM) 64-Bit Server VM (build 25.60-b23, mixed mode)
-```
+	```
+	$ java -version
+	java version "1.8.0_60"
+	Java(TM) SE Runtime Environment (build 1.8.0_60-b27)
+	Java HotSpot(TM) 64-Bit Server VM (build 25.60-b23, mixed mode)
+	```
 - Set JAVA_HOME properly
-```
-export JAVA_HOME=<YOUR_JDK_HOME>
-```
+	```
+	export JAVA_HOME=<YOUR_JDK_HOME>
+	```
 - Install [perf-map-agent](https://github.com/jrudolph/perf-map-agent)
 
   `perf-map-agent` is the instrument tool to translate the `Java Symbols` for `perf_event`, that means perf_event will read the map to unerstand the `VMA`(Virutal Memory Address) to corresponding Java symbols, and generate a human readble report 
-```
-sudo apt-get install -y cmake    
-git clone https://github.com/jrudolph/perf-map-agent
-cd perf-map-agent
-cmake .
-make
-```
+	```
+	sudo apt-get install -y cmake    
+	git clone https://github.com/jrudolph/perf-map-agent
+	cd perf-map-agent
+	cmake .
+	make
+	```
   `attach-main.jar` and `libperfmap.so` get compiled in the out folder
 - Create command links in `<HOME>/bin`
-```
-cd <perf-map-agent_HOME>/bin
-./create-links-in <HOME>/bin
-```
+	```
+	cd <perf-map-agent_HOME>/bin
+	./create-links-in <HOME>/bin
+	```
   A soft link for `perf-java-flames` command will be created in `<HOME>/bin`, so we can use this command anywhere without the need of full path specified.
 - Install [FlameGraph](https://github.com/brendangregg/FlameGraph)
-```
-git clone https://github.com/brendangregg/FlameGraph
-export FLAMEGRAPH_DIR=<FlameGraph_HOME>
-```
+	```
+	git clone https://github.com/brendangregg/FlameGraph
+	export FLAMEGRAPH_DIR=<FlameGraph_HOME>
+	```
 
 #### Profiling Java(on-cpu-sampling)
 
 - Run Java process with `-XX:+PreserveFramePointer`, e.g:
-```
-cd <modules>/calculator.ui
-java -XX:+PreserveFramePointer -jar ./out/libs/calculator.ui-1.0.0.jar
-```
+	```
+	cd <modules>/calculator.ui
+	java -XX:+PreserveFramePointer -jar ./out/libs/calculator.ui-1.0.0.jar
+	```
 - Check it is enabled(on Linux)
-```
-ps wwp `pgrep -n java` | grep PreserveFramePointer
-```
+	```
+	ps wwp `pgrep -n java` | grep PreserveFramePointer
+	```
 - Profiling and generate flamegraph for the Java process
-```
-perf-java-flames <pid>
-```
-
+	```
+	perf-java-flames <pid>
+	```
 - Sample result
 ![flamegraph-sample](./docs/flamegraph-calculator-ui.svg)
 
