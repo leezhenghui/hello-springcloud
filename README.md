@@ -17,19 +17,18 @@ The PoC sample pursue to cover below functionalities:
  - Dev
     - APIDoc(Swagger based)
     - TDD
-    - Environemnt typed configuration(Spring profiles)
+    - Env-specific configuration(Spring profiles)
     
  - Service Interconnectivity(Application/Infrastructure Runtime)
-    - API-Gateway(Edger service)
-    - Service Discovery
+    - Edge-Service(API)-Gateway(Zuul)
+    - Service Discovery(consul)
     - Intra-Communication Load Balance (Private service)
-    - Circuit Breakers
-    - Intelligent Routing
-    - Distributed Tracing Instrumentation(OpenTracing API based)
+    - Circuit Breakers(Hystrix)
+    - Distributed Tracing Instrumentation(OpenTracing API based, Kafka + Zipkin)
      
   - Service Orchestration (Infrastructure Runtime)
     - Service Orchestration(support hybrid deployables)
-    - Aggregated Logging(which enabled via attaching a sidecar log-shipper task)
+    - Aggregated Logging(enabled by sidecar(log-shipper-task) approach, filebeat + Kafka + ELK)
      
   - Ops
     - Service Admin
@@ -366,9 +365,9 @@ http://<hostname>:<port>/swagger-ui.html
 
 ## Performance Analyzer
 
-### Run `wrk` to trigger the benchmark tests, and  turn on `nmon` to collect the basic system profiling data 
+### System profiling - nmon
 
-The `nmon` command running in background to do the overall system profiling, below is an example of visualized performance analysis result(charts in spreadsheet) translated from `nmon` profiling data: **[hello-springcloud_180918_0439.nmon.xlsx](./docs/hello-springcloud_180918_0439.nmon.xlsx)**
+Use `nmon` to collect the basic system profiling data. When do the benchmark testing,  run the `nmon` command in background for overall system profiling, below is an example of visualized performance analysis result(charts in spreadsheet) translated from `nmon` profiling data: **[hello-springcloud_180918_0439.nmon.xlsx](./docs/hello-springcloud_180918_0439.nmon.xlsx)**
 
 ### FlameGraph with Perf_Event (Linux only)
 
