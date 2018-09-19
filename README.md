@@ -189,7 +189,6 @@ wrk.body   = "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
 
 ```shell
    wrk -t 200 -c 200 -s ./scripts/calculator.lua -d 60s --latency http://localhost:2809/calculator-ui/api/v1/compute
-   
 ```
 
 ## Circuit Breaker(Hystrix)
@@ -365,7 +364,11 @@ http://<hostname>:<port>/swagger-ui.html
 
 //TODO
 
-## Performance Testing/Analyse
+## Performance Analyzer
+
+### Run `wrk` to trigger the benchmark tests, and  turn on `nmon` to collect the basic system profiling data 
+
+The `nmon` command running in background to do the overall system profiling, below is an example of  performance analysis result translate from `nmon` profiling data: **[hello-springcloud_180918_0439.nmon.xlsx](./docs/hello-springcloud_180918_0439.nmon.xlsx)**
 
 ### FlameGraph with Perf_Event (Linux only)
 
