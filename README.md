@@ -21,14 +21,14 @@ The PoC sample pursue to cover below functionalities:
     
  - Service Interconnectivity(Application/Infrastructure Runtime)
     - Edge-Service(API)-Gateway(Zuul)
-    - Service Discovery(consul)
+    - Service Discovery(Consul)
     - Intra-Communication Load Balance (Private service)
     - Circuit Breakers(Hystrix)
-    - Distributed Tracing Instrumentation(OpenTracing API based, Kafka + Zipkin)
+    - Distributed Tracing Instrumentation(OpenTracing API based, opentracing-tracer + Kafka|HTTP + Zipkin)
      
   - Service Orchestration (Infrastructure Runtime)
     - Service Orchestration(support hybrid deployables)
-    - Aggregated Logging(enabled by sidecar(log-shipper-task) approach, filebeat + Kafka + ELK)
+    - Aggregated Logging(enabled sidecar(task-group) approach in nomad, log-shipper-task + Kafka + ELK)
      
   - Ops
     - Service Admin
