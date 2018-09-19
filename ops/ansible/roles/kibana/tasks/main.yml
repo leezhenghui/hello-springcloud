@@ -51,7 +51,7 @@
     seconds: 15 
 
 - name: Check if Kibana is running
-  shell: "netstat -anp | grep 5601 | grep LISTEN"
+  shell: ps -ef | grep kibana | grep -v grep 
   ignore_errors: yes
   changed_when: false
   register: service_kibana_status

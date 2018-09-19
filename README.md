@@ -36,9 +36,9 @@ The PoC sample pursue to cover below functionalities:
     - Service Allocation Status(Hashi-ui)
     - Distributed Tracing Reporter(Zipkin-ui)
     - Centralized Logging Reporter (Kibana)
-    -  nmon system sampling 
-    - Java Memory Analysis
-    - Java Core Dump Analysis
+    -  `nmon` system overall performance sampling 
+    - Java Memory Analysis(Oracle JDK and IBM JDK)
+    - Java Core Dump Analysis(Oracle JDK and IBM JDK)
     - perf\_event + flamegraph profiling (Linux only)
     - wrk
  
