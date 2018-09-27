@@ -52,35 +52,38 @@ The PoC sample pursue to cover below functionalities:
 ```
 
 ├── modules
-│   ├── add.svc            // add operator service, which will be called by calculator-ui
+│   ├── add.svc               // add operator service, which will be called by calculator-ui
 │   │   ├── build.gradle
 │   │   ├── out
 │   │   └── src
-│   ├── api.gateway       // api.gateway based on Zuul
+│   ├── api.gateway           // api.gateway based on Zuul
 │   │   ├── build.gradle
 │   │   ├── out
 │   │   └── src
-│   ├── calculator.ui     // front-end service(edge service), which will be exposed on public cloud
+│   ├── calculator.ui         // front-end service(edge service), which will be exposed on public cloud
 │   │   ├── build.gradle
 │   │   ├── out
 │   │   └── src
-│   ├── springboot.admin  // spring-boot admin service
+│   ├── ifw.lib               // A prototype simple library impl to demonstrate an AOP based invocation framework with annotated QoS supports (just for demo, not production qualified)
 │   │   ├── build.gradle
 │   │   ├── out
 │   │   └── src
-│   ├── sub.svc           // subtract operator service, which will be called by calculator-ui
+│   ├── springboot.admin      // spring-boot admin service
 │   │   ├── build.gradle
 │   │   ├── out
 │   │   └── src
-│   ├── turbine.aggr      // turbine aggregation service
+│   ├── sub.svc               // subtract operator service, which will be called by calculator-ui
 │   │   ├── build.gradle
 │   │   ├── out
 │   │   └── src
-│   └── zipkin.server     // Zipkin server(with HTTP and kafka collectors, in-memory span storage)
+│   ├── turbine.aggr          // turbine aggregation service
+│   │   ├── build.gradle
+│   │   ├── out
+│   │   └── src
+│   └── zipkin.server         // Zipkin server(with HTTP and kafka collectors, in-memory span storage)
 │       ├── build.gradle
 │       ├── out
 │       └── src
-
 
 ```
 
