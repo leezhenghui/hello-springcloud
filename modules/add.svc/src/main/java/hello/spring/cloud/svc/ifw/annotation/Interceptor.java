@@ -1,12 +1,10 @@
 package hello.spring.cloud.svc.ifw.annotation;
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface QoS {
-   Interceptor[] value();
+public @interface Interceptor {
+    int weight() default 100000;
+    String QName() default "";
 }
