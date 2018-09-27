@@ -6,6 +6,7 @@ include ':api.gateway'
 include ':zipkin.server'
 include ':springboot.admin'
 include ':turbine.aggr'
+include ':ifw.lib'
 
 project(':calculator.ui').projectDir = "$rootDir/modules/calculator.ui" as File
 project(':add.svc').projectDir = "$rootDir/modules/add.svc" as File
@@ -14,3 +15,4 @@ project(':api.gateway').projectDir = "$rootDir/modules/api.gateway" as File
 project(':zipkin.server').projectDir = "$rootDir/modules/zipkin.server" as File
 project(':springboot.admin').projectDir = "$rootDir/modules/springboot.admin" as File
 project(':turbine.aggr').projectDir = "$rootDir/modules/turbine.aggr" as File
+project(':ifw.lib').projectDir = "$rootDir/modules/ifw.lib" as File

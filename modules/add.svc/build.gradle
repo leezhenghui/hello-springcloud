@@ -10,6 +10,8 @@ dependencies {
 
     compile("org.springframework.cloud:spring-cloud-starter-consul-all:$springCloudVersion")
 
+	compile project(":ifw.lib")
+
 	compile("io.opentracing.contrib:opentracing-spring-cloud-starter:$otSpringCloudStarterVersion")
     compile("io.opentracing.brave:brave-opentracing:$otBraveVersion")
     compile("io.zipkin.reporter2:zipkin-sender-okhttp3:$zipkinSenderVersion")
