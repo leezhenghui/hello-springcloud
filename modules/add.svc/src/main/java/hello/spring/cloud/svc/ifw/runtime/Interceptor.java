@@ -9,15 +9,20 @@ enum InteractionPhase {
     FAULT
 }
 
-abstract class Interceptor implements Invoker {
+public abstract class Interceptor implements Invoker, Comparable {
 
     private static Logger logger = LoggerFactory.getLogger(Interceptor.class);
 
     private Invoker nexter;
+    private int weight;
 
     public abstract void processRequest(RuntimeContext ctx);
     public abstract void processResponse(RuntimeContext ctx);
     public abstract void processFault(RuntimeContext ctx);
+
+    public Interceptor(int weight) {
+        this.weight = weight;
+    }
 
     public void setNext(Invoker nexter) {
         this.nexter = nexter;
@@ -54,5 +59,24 @@ abstract class Interceptor implements Invoker {
                 processFault(ctx);
             }
         }
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (! (o instanceof Interceptor)) {
+            return -1;
+        }
+
+        Interceptor l = (Interceptor) o;
+
+        if (this.weight == l.weight) {
+            return 0;
+        }
+
+        if (this.weight > l.weight) {
+            return -1;
+        }
+
+        return 1;
     }
 }

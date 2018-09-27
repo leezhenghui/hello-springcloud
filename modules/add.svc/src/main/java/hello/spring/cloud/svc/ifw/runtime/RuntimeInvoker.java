@@ -29,6 +29,7 @@ public class RuntimeInvoker {
             Invocable invocable = cache.get(key);
             if (invocable == null) {
                 invocable = wrap(pjp);
+                logger.debug("Create invocation wrapper for \"" + key + "\"");
                 cache.put(key, invocable);
             }
 
@@ -55,14 +56,11 @@ public class RuntimeInvoker {
             QoS[] annotations = targetMethod.getAnnotationsByType(QoS.class);
 
             invocable = new Invocable(targetMethod, annotations[0].value());
+            return invocable;
         } catch (NoSuchMethodException e) {
             String reason = "Can not find method \"" + pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName() + "\"";
             logger.error(reason, e);
             throw new ServiceRuntimeException("ifw", reason, e);
         }
-
-        return invocable;
     }
-
-
 }

@@ -6,5 +6,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Interceptor {
     int weight() default 100000;
-    String QName() default "";
+    Class<? extends hello.spring.cloud.svc.ifw.runtime.Interceptor> type();
 }

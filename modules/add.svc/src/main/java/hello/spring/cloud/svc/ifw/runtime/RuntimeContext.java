@@ -53,6 +53,16 @@ public class RuntimeContext {
 
     private Object targetObject;
 
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    private String operation;
+
 
 
     public RuntimeContext() {
