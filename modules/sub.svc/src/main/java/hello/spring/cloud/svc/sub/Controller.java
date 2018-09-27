@@ -15,13 +15,13 @@ public class Controller {
 
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private SubOp subOp;
 		
 	@GetMapping(value = "/api/v1/execute")
 	public int subtract(@QueryParam(value = "l") int l, @QueryParam(value = "r" ) int r) {
-		int result = l - r;
-
-		System.out.println("[DEBUG] " + l + " - " + r + " = " + result);
-		return result;
+		return subOp.action(l,r);
 	}
 
 }
