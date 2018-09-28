@@ -36,27 +36,37 @@ public abstract class Interceptor implements Invoker, Comparable {
     public void invoke(RuntimeContext ctx) {
         InteractionPhase phase = InteractionPhase.REQUEST;
         try {
+            logger.debug(this.QName() + ".processRequest() [Enter]");
             processRequest(ctx);
+            logger.debug(this.QName() + ".processRequest() [Exit]");
             getNext().invoke(ctx);
             if (ctx.getFault() == null) {
                 phase = InteractionPhase.RESPONSE;
+                logger.debug(this.QName() + ".processResponse() [Enter]");
                 processResponse(ctx);
+                logger.debug(this.QName() + ".processResponse() [Exit]");
             } else {
                 phase = InteractionPhase.FAULT;
+                logger.debug(this.QName() + ".processFault() [Enter]");
                 processFault(ctx);
+                logger.debug(this.QName() + ".processFault() [Exit]");
             }
         } catch(ServiceRuntimeException sre) {
             logger.error(sre.getMessage(), sre.getDetails());
             if (phase != InteractionPhase.FAULT) {
                 ctx.setFault(sre);
+                logger.debug(this.QName() + ".processFault() [Enter]");
                 processFault(ctx);
+                logger.debug(this.QName() + ".processFault() [Exit]");
             }
         } catch(Throwable re) {
             logger.error(re.getMessage(), re);
             if (phase != InteractionPhase.FAULT) {
                 ServiceRuntimeException sre = new ServiceRuntimeException(this.QName(), re.getMessage(), re);
                 ctx.setFault(sre);
+                logger.debug(this.QName() + ".processFault() [Enter]");
                 processFault(ctx);
+                logger.debug(this.QName() + ".processFault() [Exit]");
             }
         }
     }
