@@ -1,5 +1,21 @@
+/**
+ * Copyright 2018, leezhenghui@gmail.com.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package hello.spring.cloud.svc.ifw.runtime;
 
+import hello.spring.cloud.svc.ifw.annotation.InterceptorProperty;
 import hello.spring.cloud.svc.ifw.annotation.QoS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,14 +25,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 
 public class Invocable {
 
     private static Logger logger = LoggerFactory.getLogger(Invocable.class);
 
     private static class Header extends Interceptor {
-        public Header(int weight) {
-            super(weight);
+        public Header(int weight, Properties conf) {
+            super(weight, conf);
         }
 
         @Override
@@ -109,7 +126,7 @@ public class Invocable {
     public Invocable(Method m, hello.spring.cloud.svc.ifw.annotation.Interceptor[] annotations) {
 
         try {
-            Interceptor header = new Header(-1);
+            Interceptor header = new Header(-1, null);
             Invoker tail = new Tail(m);
             this.ic = new InvocationChain(header, tail);
             ArrayList<Interceptor> il = new ArrayList<Interceptor>();
@@ -117,8 +134,14 @@ public class Invocable {
                 if (annotation.type() == null) {
                     continue;
                 }
-                Constructor c = annotation.type().getDeclaredConstructor(int.class);
-                il.add((Interceptor) c.newInstance(annotation.weight()));
+                InterceptorProperty[] props = annotation.properties();
+
+                Properties conf = new Properties();
+                for (InterceptorProperty prop: props) {
+                    conf.setProperty(prop.name(), prop.value());
+                }
+                Constructor c = annotation.type().getDeclaredConstructor(int.class, Properties.class);
+                il.add((Interceptor) c.newInstance(annotation.weight(), conf));
             }
 
             Collections.sort(il);

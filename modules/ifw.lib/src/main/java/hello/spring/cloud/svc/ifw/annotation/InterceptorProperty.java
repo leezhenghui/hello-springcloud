@@ -13,14 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package hello.spring.cloud.svc.ifw.annotation;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * This annotation allows specify Hystrix command properties in the following format:
+ * property name = property value.
+ */
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Interceptor {
-    int weight() default 100000;
-    Class<? extends hello.spring.cloud.svc.ifw.runtime.Interceptor> type();
-    InterceptorProperty[] properties() default {};
+@Documented
+public @interface InterceptorProperty {
+
+    /**
+     * Property name.
+     *
+     * @return name
+     */
+    String name();
+
+    /**
+     * Property value
+     *
+     * @return value
+     */
+    String value();
+
 }
+

@@ -465,7 +465,7 @@ Use `nmon` to collect the basic system profiling data. When do the benchmark tes
 To enable signal-based Java Heap dumps, the `IBM_HEAPDUMP=TRUE` environmental variable or the appropriate `JAVA_DUMP_OPTS` must be set.  e.g:
 
 ```
-# Manually trigger a heap dump by sending a specific signal to JVM
+# Manually trigger a heap dump by sending a SIGQUIT signal to JVM process
 IBM_HEAPDUMP=TRUE ~/opt/ibm-jdk-1.8.0/bin/java -jar ./add.svc-1.0.0.jar # the pid is 21046
 kill -3 21046
 ```
@@ -510,7 +510,7 @@ kill -3 <pid> # print the dump info in the java process stdout
 - For IBM JVM, the core dump file contains much more contents, and we can use [IBM Thread and Monitor Dump Analyzer](https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=2245aa39-fa5c-4475-b891-14c205f7333c) for the analysis
 
 ```
-# Manually trigger a javacore dump by sending a specific signal to JVM
+# Manually trigger a javacore dump by sending a SIGQUIT signal to JVM process
 kill -3 <pid>
 ```
 
