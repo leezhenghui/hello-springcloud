@@ -1,4 +1,4 @@
-package hello.spring.cloud.calculator.ui;
+package hello.spring.cloud.calculator.ui.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ import java.util.Set;
 
 @Configuration
 @EnableSwagger2
-public class Config {
+public class AppConfig {
 
 	private static final String SVC_NAME = "calculator-ui";
 	private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES =

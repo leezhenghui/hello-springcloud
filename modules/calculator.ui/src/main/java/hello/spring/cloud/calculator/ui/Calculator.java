@@ -1,10 +1,15 @@
 package hello.spring.cloud.calculator.ui;
 
+import hello.spring.cloud.calculator.ui.qos.CounterInterceptor;
+import hello.spring.cloud.calculator.ui.qos.event.CounterEvent;
 import hello.spring.cloud.svc.ifw.annotation.Interceptor;
+import hello.spring.cloud.svc.ifw.annotation.InterceptorProperty;
 import hello.spring.cloud.svc.ifw.annotation.QoS;
 import hello.spring.cloud.svc.ifw.runtime.interceptor.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -17,8 +22,13 @@ public class Calculator {
     @Autowired
     private SubSvcClient sc;
 
+    private int count = 0;
+
     @QoS(value = {
-            @Interceptor(weight = 1, type = Log.class)
+            @Interceptor(weight = 1, type = Log.class),
+            @Interceptor(weight = 2, type = CounterInterceptor.class, properties = {
+                    @InterceptorProperty(name = "topic", value = "calculator-ui-exectue-counter")
+            })
     })
     public Output execute(Input input) {
         Output reval = new Output();
@@ -93,5 +103,12 @@ public class Calculator {
             }
         }
         return reval;
+    }
+
+    @Transactional(transactionManager = "kafkaTxMgrt")
+    @KafkaListener(groupId = "calculator-counter", topics = "calculator-ui-exectue-counter")
+    public void onFinish(CounterEvent ce) {
+        this.count += ce.getCount();
+        System.out.println("[DEBUG]: [onFinish] => " + ce.toString() + "; invocation-count: " + this.count);
     }
 }
