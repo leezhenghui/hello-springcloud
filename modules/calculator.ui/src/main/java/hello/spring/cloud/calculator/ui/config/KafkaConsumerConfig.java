@@ -1,6 +1,6 @@
 package hello.spring.cloud.calculator.ui.config;
 
-import hello.spring.cloud.calculator.ui.qos.event.CounterEvent;
+import hello.spring.cloud.svc.ifw.runtime.interceptor.CounterInterceptor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -37,8 +37,8 @@ public class KafkaConsumerConfig {
         return propsMap;
     }
 
-    private ConsumerFactory<String, CounterEvent> consumerFactory() {
-        JsonDeserializer<CounterEvent> jd = new JsonDeserializer<>(CounterEvent.class);
+    private ConsumerFactory<String, CounterInterceptor.CounterEvent> consumerFactory() {
+        JsonDeserializer<CounterInterceptor.CounterEvent> jd = new JsonDeserializer<>(CounterInterceptor.CounterEvent.class);
         jd.addTrustedPackages("*");
         return new DefaultKafkaConsumerFactory<>(consumerProps(), new StringDeserializer(), jd);
     }
@@ -50,7 +50,7 @@ public class KafkaConsumerConfig {
 
     @Bean
     public KafkaListenerContainerFactory<?> kafkaListenerContainerFactory(KafkaTransactionManager kafkaTxMgrt) {
-        ConcurrentKafkaListenerContainerFactory<String, CounterEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, CounterInterceptor.CounterEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.getContainerProperties().setPollTimeout(3000);
         factory.getContainerProperties().setTransactionManager(kafkaTxMgrt);

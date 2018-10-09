@@ -17,7 +17,7 @@ The PoC sample pursue to cover below functionalities:
  - Dev
     - APIDoc(Swagger based)
     - TDD
-    - Event-Driven(Kafka-based)
+    - Event-Driven(Kafka-based transactional message sender and consumer)
     - Env-specific configuration(Spring profiles)
     
  - Service Interconnectivity(Application/Infrastructure Runtime)

@@ -1,4 +1,4 @@
-package hello.spring.cloud.calculator.ui;
+package hello.spring.cloud.svc.ifw.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

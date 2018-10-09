@@ -1,6 +1,8 @@
 package hello.spring.cloud.calculator.ui;
 
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 @EnableDiscoveryClient
 @Api(value = "Calculator-UI(Frond-End API)")
 public class Controller {
+
+	private static Logger logger = LoggerFactory.getLogger(Controller.class);
 
 	//@Autowired
 	//private RestTemplate restTemplate;
@@ -44,5 +48,16 @@ public class Controller {
 	})
 	public Output compute(@RequestBody @ApiParam(required = true) Input input) {
 		return calculator.execute(input);
+	}
+
+	@RequestMapping(value = "/api/v1/counter/config", method = RequestMethod.GET)
+	@ApiOperation(value = "Counter Config", response = void.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully configured")
+	})
+	public void counterConfig(@RequestParam(value = "enabled") @ApiParam(required = true) boolean enabled) {
+		logger.info("[counterConfig] [Enter]" + enabled);
+		Calculator.counterEnabled = enabled;
+		logger.info("[counterConfig] [Exit]");
 	}
 }

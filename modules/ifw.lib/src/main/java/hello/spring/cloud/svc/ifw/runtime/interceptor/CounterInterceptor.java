@@ -1,36 +1,102 @@
-package hello.spring.cloud.calculator.ui.qos;
+/**
+ * Copyright 2018, leezhenghui@gmail.com.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package hello.spring.cloud.svc.ifw.runtime.interceptor;
 
-import hello.spring.cloud.calculator.ui.ContextProvider;
-import hello.spring.cloud.calculator.ui.qos.event.CounterEvent;
+import hello.spring.cloud.svc.ifw.util.ContextProvider;
 import hello.spring.cloud.svc.ifw.annotation.QoS;
 import hello.spring.cloud.svc.ifw.runtime.Interceptor;
 import hello.spring.cloud.svc.ifw.runtime.RuntimeContext;
 import hello.spring.cloud.svc.ifw.runtime.ServiceRuntimeException;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class CounterInterceptor extends Interceptor{
 
+    public static class CounterEvent implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        public String getUuid() {
+            return uuid;
+        }
+
+        private String uuid;
+
+        public CounterEvent() {
+            this.uuid = UUID.randomUUID().toString();
+        }
+
+        private Date timestamp;
+
+        public Date getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(Date timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        private int count;
+
+        public String toString() {
+
+            StringBuffer sb = new StringBuffer();
+            sb.append("UUID:").append(this.uuid).append("; count:").append(this.count).append("; timestamp:").append(this.timestamp.toString());
+
+            return sb.toString();
+        }
+
+    }
+
     public static interface TxAwaredAction {
         public void run() throws ServiceRuntimeException;
     }
 
+    private static String TOPIC_PROPERTY_NAME = "topic";
+    private static String KAFKA_TEMPLATE_BEAN_NAME = "kafkaTemplateBeanName";
+    private static String SEND_TIMEOUT = "send_timeout";
+
     private KafkaTemplate kt;
     private String topic;
+    private int timeout = 10;
 
     public CounterInterceptor(int weight, Properties conf) {
         super(weight, conf);
-        this.kt = (KafkaTemplate) ContextProvider.getBean("kafkaTemplate");
-        this.topic = conf.getProperty("topic");
+        this.kt = (KafkaTemplate) ContextProvider.getBean(conf.getProperty(KAFKA_TEMPLATE_BEAN_NAME));
+        this.topic = conf.getProperty(TOPIC_PROPERTY_NAME);
+
+        if (conf.getProperty(SEND_TIMEOUT) != null && (! "".equals(conf.getProperty(SEND_TIMEOUT).trim()))) {
+            this.timeout = Integer.parseInt(conf.getProperty(SEND_TIMEOUT));
+        }
     }
 
     @Override
@@ -41,7 +107,7 @@ public class CounterInterceptor extends Interceptor{
         ce.setTimestamp(new Date());
 
         try {
-            this.kt.send(this.topic, ce).get(10, TimeUnit.SECONDS);
+            this.kt.send(this.topic, ce).get(this.timeout, TimeUnit.SECONDS);
         } catch (ExecutionException err) {
             throw new ServiceRuntimeException(this.QName(), "ExecutionException", err);
         } catch (TimeoutException | InterruptedException err) {

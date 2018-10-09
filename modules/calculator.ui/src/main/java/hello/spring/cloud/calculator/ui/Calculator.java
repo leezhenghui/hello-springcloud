@@ -1,7 +1,6 @@
 package hello.spring.cloud.calculator.ui;
 
-import hello.spring.cloud.calculator.ui.qos.CounterInterceptor;
-import hello.spring.cloud.calculator.ui.qos.event.CounterEvent;
+import hello.spring.cloud.svc.ifw.runtime.interceptor.CounterInterceptor;
 import hello.spring.cloud.svc.ifw.annotation.Interceptor;
 import hello.spring.cloud.svc.ifw.annotation.InterceptorProperty;
 import hello.spring.cloud.svc.ifw.annotation.QoS;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 @Service
 public class Calculator {
 
+    public static boolean counterEnabled = true;
+
     @Autowired
     private AddSvcClient ac;
 
@@ -27,7 +28,9 @@ public class Calculator {
     @QoS(value = {
             @Interceptor(weight = 1, type = Log.class),
             @Interceptor(weight = 2, type = CounterInterceptor.class, properties = {
-                    @InterceptorProperty(name = "topic", value = "calculator-ui-exectue-counter")
+                    @InterceptorProperty(name = "topic", value = "calculator-ui-exectue-counter"),
+                    @InterceptorProperty(name = "kafkaTemplateBeanName", value = "kafkaTemplate"),
+                    @InterceptorProperty(name = "send_timeout", value = "10")
             })
     })
     public Output execute(Input input) {
@@ -107,7 +110,12 @@ public class Calculator {
 
     @Transactional(transactionManager = "kafkaTxMgrt")
     @KafkaListener(groupId = "calculator-counter", topics = "calculator-ui-exectue-counter")
-    public void onFinish(CounterEvent ce) {
+    public void onFinish(CounterInterceptor.CounterEvent ce) {
+        if (! Calculator.counterEnabled) {
+            System.out.println("[DEBUG]: [onFinish] rollback event => " + ce.toString());
+            throw new UnsupportedOperationException("Throw exception to rollback Kafka TX");
+        }
+
         this.count += ce.getCount();
         System.out.println("[DEBUG]: [onFinish] => " + ce.toString() + "; invocation-count: " + this.count);
     }
