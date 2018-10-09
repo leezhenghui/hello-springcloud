@@ -22,7 +22,7 @@ public class Calculator {
     @Autowired
     private SubSvcClient sc;
 
-    private int count = 0;
+    private volatile int count = 0;
 
     @QoS(value = {
             @Interceptor(weight = 1, type = Log.class),
