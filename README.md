@@ -17,11 +17,12 @@ The PoC sample pursue to cover below functionalities:
  - Dev
     - APIDoc(Swagger based)
     - TDD
+    - Event-Driven(Kafka-based)
     - Env-specific configuration(Spring profiles)
     
  - Service Interconnectivity(Application/Infrastructure Runtime)
     - Edge-Service(API)-Gateway(Zuul)
-    - Service Discovery(Consul)
+    - Service Registry/Discovery(Consul)
     - Intra-Communication Load Balance (Private service)
     - Circuit Breakers(Hystrix)
     - Distributed Tracing Instrumentation(OpenTracing API based, opentracing-tracer + Kafka|HTTP + Zipkin)
