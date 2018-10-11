@@ -49,6 +49,19 @@ The PoC sample pursue to cover below functionalities:
  >  
  >    In order to keep the PoC sample as simple as possible, I didn't involve CI/CD features here. 
 
+
+| <td colspan=1>Layer 1  | <td colspan=1>Layer 2   | Layer 3
+| ---------------------- | ----------------------- | ---------
+| <td rowspan=4>L1 Name  | <td rowspan=2>L2 Name A | L3 Name A
+|                        |                         | L3 Name B
+|                        | <td rowspan=2>L2 Name B | L3 Name C
+|                        |                         | L3 Name D
+| ---------------------- | ----------------------- | ---------
+| <td rowspan=4>L1 Name  | <td rowspan=2>L2 Name A | L3 Name A
+|                        |                         | L3 Name B
+|                        | <td rowspan=2>L2 Name B | L3 Name C
+|                        |                         | L3 Name D
+
 ### Spring-Boot Modules
 
 ```
