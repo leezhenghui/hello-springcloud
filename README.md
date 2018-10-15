@@ -51,15 +51,17 @@ The PoC sample pursue to cover below functionalities:
 
 
 | MSA Aspect             | Feature                   | Tech-Deps/Vendors  | Related Module
-| ---------------------- | ------------------------- | ------------------ | --------------
-|               Dev      |               APIDoc      | Swagger            |
-|                        |               TDD         |                    |
-|                        |               AOP         |                    |
-|                        |                           | L3 Name D
-|               L1 Name  |               L2 Name A   | L3 Name A
-|                        |                           | L3 Name B
-|                        |               L2 Name B   | L3 Name C
-|                        |                           | L3 Name D
+| ---------------------- | ------------------------- | ------------------ | ------------------------------
+|               Dev      |               APIDoc      | Swagger            |calculator.ui, add.svc, sub.svc 
+|                        |               TDD         | Consumer Driven Contracts|calculator.ui, add.svc, sub.svc
+|                        |               AOP         | Spring AOP         |ifw.lib, calculator.ui
+|                        |            Evn-Spec Config| Spring-profiles    |calculator.ui, add.svc, sub.svc
+|    Intercommunication  |Edge-Servie(API) Gateway   | Zuul               |api.gateway
+|                        |Service Discovery/Registry | Consul             |calculator.ui, add.svc, sub.svc
+|                        |        Circuit Breakers   | Hystrix            |calculator.ui
+|                        |        Distributed Tracing| OpenTracing, Zipkin|calculator.ui(HTTP), add.svc(HTTP), sub.svc(HTTP), api.gateway(Kafka)
+| Service Orchestration  |Scheduling                 | Nomad              |All
+|                        |Aggregated Logging         | Nomad, ELK, sidecar task|calculator.ui(local file), add.svc(local file), sub.svc(local file), api.gateway(Kafka)
 
 ### Spring-Boot Modules
 
@@ -332,8 +334,6 @@ relating to the tracing system from delaying or breaking user code.
 ## Spring Boot Admin UI
 
 ![sring-boot-admin-1](./docs/springboot-admin-1.png)
-
-//TODO, more deep dive usage
 
 ## APIDoc(Swagger)
 
