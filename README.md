@@ -12,71 +12,9 @@ The purpose of this repository aims to provide a hands-on architecture PoC(proof
 
 ![PoC Scenario Overview](./docs/architecture-spring-cloud-poc.png)
 
-The PoC sample pursue to cover below functionalities:
- 
- - Dev
-    - APIDoc(Swagger based)
-    - TDD
-    - Event-Driven(Kafka-based transactional message sender and consumer)
-    - AOP(Customzied AOP annotation)
-    - Env-specific configuration(Spring profiles)
-    
- - Service Interconnectivity(Application/Infrastructure Runtime)
-    - Edge-Service(API)-Gateway(Zuul)
-    - Service Registry/Discovery(Consul)
-    - Intra-Communication Load Balance (Private service)
-    - Circuit Breakers(Hystrix)
-    - Distributed Tracing Instrumentation(OpenTracing API based, opentracing-tracer + Kafka|HTTP + Zipkin)
-     
-  - Service Orchestration (Infrastructure Runtime)
-    - Service Orchestration(support hybrid deployables)
-    - Aggregated Logging(enabled sidecar(task-group) approach in nomad, log-shipper-task + Kafka + ELK)
-     
-  - Ops
-    - Service Admin
-    - Service Allocation Status(Hashi-ui)
-    - Distributed Tracing Reporter(Zipkin-ui)
-    - Centralized Logging Reporter (Kibana)
-    -  `nmon` system overall performance sampling 
-    - Java Memory Analysis(Oracle JDK and IBM JDK)
-    - Java Core Dump Analysis(Oracle JDK and IBM JDK)
-    - perf\_event + flamegraph profiling (Linux only)
-    - wrk
- 
- > Notable:
- >
- >    CI/CD refer to the combined practices of `continuous integration` and `continuous delivery`
- >  
- >    In order to keep the PoC sample as simple as possible, I didn't involve CI/CD features here. 
 
 
-Features coverage matrix
-
-| MSA Capability         | Feature                   | Tech-Deps/Vendors  | Related Module
-| ---------------------- | ------------------------- | ------------------ | ------------------------------
-|               Dev      |               APIDoc      | Swagger            |calculator.ui, add.svc, sub.svc 
-|                        |               TDD         | Consumer Driven Contracts|calculator.ui, add.svc, sub.svc
-|                        |               AOP         | Spring AOP         |ifw.lib(annotation-based aop), calculator.ui
-|                        |            Evn-Spec Config| Spring-profiles    |All
-|    Intercommunication  |Edge-Servie(API) Gateway   | Zuul               |api.gateway
-|                        |Service Discovery/Registry | Consul             |All
-|                        |        Load Balance       | Spring, Robbon     |api.gateway, calculator.ui
-|                        |     Event-Driven/Messaging| Kafka(transactional message)|ifw.lib(counter interceptor), calculator.ui
-|                        |        Circuit Breakers   | Spring, Hystrix    |api.gateway, calculator.ui
-|                        |        Distributed Tracing| OpenTracing, Zipkin|calculator.ui(HTTP), add.svc(HTTP), sub.svc(HTTP), api.gateway(Kafka)
-| Service Orchestration  |Service Scheduling         | Nomad              |Hybride deployables support, standalone, container.
-|                        |Centralized Logging        | Nomad(Sidecar Task), Filebeat, ELK|calculator.ui(local file), add.svc(local file), sub.svc(local file), api.gateway(Kafka)
-| Operation              |Service Admin| Springboot-Admin, Spring-acutator|All
-|                        |Service allocation status| Nomad, Hashi-ui|All
-|                        |Distributed Tracing Reporter|Zipkin-ui |All
-|                        |Centralized Logging Query| ELK, Kibana|All
-|                        |Overall System(Linux) profiling|nmon|All
-|                        |Process full stack(java, c, kernel) profiling| perf_event, framegraph|All
-|                        |Java heap analysis| IBM/Oracle JDK|
-|                        |Java coredump analysis| IBM/Oracle JDK|
-|                        |Web Perf Testing|wrk|
-
-### Spring-Boot Modules
+#### Spring-Boot Modules
 
 ```
 
@@ -115,6 +53,38 @@ Features coverage matrix
 │       └── src
 
 ```
+
+#### The PoC sample MSA features matrix:
+
+| MSA Capability         | Feature                   | Tech-Deps/Vendors  | Related Module
+| ---------------------- | ------------------------- | ------------------ | ------------------------------
+|               Dev      |               APIDoc      | Swagger            |calculator.ui, add.svc, sub.svc 
+|                        |               TDD         | Consumer Driven Contracts|calculator.ui, add.svc, sub.svc
+|                        |               AOP         | Spring AOP         |ifw.lib(customized aop annotation), calculator.ui
+|                        |            Evn-Spec Config| Spring-profiles    |All
+|    Intercommunication  |Edge-Servie(API) Gateway   | Zuul               |api.gateway
+|                        |Service Discovery/Registry | Consul             |All
+|                        |        Load Balance       | Consul, Spring, Robbon|api.gateway, calculator.ui
+|                        |     Event-Driven/Messaging| Kafka(transactional message)|ifw.lib(counter interceptor), calculator.ui
+|                        |        Circuit Breakers   | Spring, Hystrix    |api.gateway, calculator.ui
+|                        |        Distributed Tracing| OpenTracing, Kafka, Zipkin|calculator.ui(HTTP), add.svc(HTTP), sub.svc(HTTP), api.gateway(Kafka), zipkin.server
+| Service Orchestration  |Service Scheduling         | Nomad              |Hybrid deployables support, standalone, container.
+|                        |Centralized Logging        | Nomad(Sidecar Task), Filebeat, Kafka, ELK|calculator.ui(local file), add.svc(local file), sub.svc(local file), api.gateway(Kafka)
+| Operation              |Service Admin| Springboot-Admin, Spring-acutator|All
+|                        |Service allocation status| Nomad, Hashi-ui|All
+|                        |Distributed Tracing Reporter|Zipkin-ui |All
+|                        |Centralized Logging Query| ELK, Kibana|All
+|                        |Overall System(Linux) profiling|nmon|All
+|                        |Process full stack(java, c, kernel) profiling| perf_event, framegraph|All
+|                        |Java heap analysis| IBM/Oracle JDK|
+|                        |Java thread(coredump) analysis| IBM/Oracle JDK|
+|                        |Web Perf Testing|wrk|
+
+ > Notable:
+ >
+ >    CI/CD refer to the combined practices of `continuous integration` and `continuous delivery`
+ >  
+ >    In order to keep the PoC sample as simple as possible, I didn't involve CI/CD features here. 
 
 ## Run the sample in standalone mode(w/o ops support)
 
