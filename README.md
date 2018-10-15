@@ -50,18 +50,30 @@ The PoC sample pursue to cover below functionalities:
  >    In order to keep the PoC sample as simple as possible, I didn't involve CI/CD features here. 
 
 
-| MSA Aspect             | Feature                   | Tech-Deps/Vendors  | Related Module
+Features coverage matrix
+
+| MSA Capability         | Feature                   | Tech-Deps/Vendors  | Related Module
 | ---------------------- | ------------------------- | ------------------ | ------------------------------
 |               Dev      |               APIDoc      | Swagger            |calculator.ui, add.svc, sub.svc 
 |                        |               TDD         | Consumer Driven Contracts|calculator.ui, add.svc, sub.svc
-|                        |               AOP         | Spring AOP         |ifw.lib, calculator.ui
-|                        |            Evn-Spec Config| Spring-profiles    |calculator.ui, add.svc, sub.svc
+|                        |               AOP         | Spring AOP         |ifw.lib(annotation-based aop), calculator.ui
+|                        |            Evn-Spec Config| Spring-profiles    |All
 |    Intercommunication  |Edge-Servie(API) Gateway   | Zuul               |api.gateway
-|                        |Service Discovery/Registry | Consul             |calculator.ui, add.svc, sub.svc
-|                        |        Circuit Breakers   | Hystrix            |calculator.ui
+|                        |Service Discovery/Registry | Consul             |All
+|                        |        Load Balance       | Spring, Robbon     |api.gateway, calculator.ui
+|                        |        Circuit Breakers   | Spring, Hystrix    |api.gateway, calculator.ui
 |                        |        Distributed Tracing| OpenTracing, Zipkin|calculator.ui(HTTP), add.svc(HTTP), sub.svc(HTTP), api.gateway(Kafka)
-| Service Orchestration  |Scheduling                 | Nomad              |All
-|                        |Aggregated Logging         | Nomad, ELK, sidecar task|calculator.ui(local file), add.svc(local file), sub.svc(local file), api.gateway(Kafka)
+| Service Orchestration  |Service Scheduling         | Nomad              |All
+|                        |Centralized Logging        | Nomad(Sidecar Task), Filebeat, ELK|calculator.ui(local file), add.svc(local file), sub.svc(local file), api.gateway(Kafka)
+| Operation              |Application Monitor        | Springboot-Admin, Spring-acutator|All
+|                        |Service allocation status  | Nomad, Hashi-ui|All
+|                        |Distributed Tracing Reporter|Zipkin-ui |All
+|                        |Centralized Logging Query  | ELK, Kibana|All
+|                        |Overall System(Linux) profiling|nmon|All
+|                        |Process full stack(java, c, kernel) profiling| perf_event, framegraph|All
+|                        |Java heap analysis  | IBM/Oracle JDK|
+|                        |Java coredump analysis  | IBM/Oracle JDK|
+|                        |Web Perf Testing  | wrk|
 
 ### Spring-Boot Modules
 
