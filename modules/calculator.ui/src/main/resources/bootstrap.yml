@@ -14,7 +14,11 @@ spring:
 server:
   port: 0
 
-management.endpoints.web.exposure.include: '*'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 # Disable Hystrix timeout globally (for all services)
 #hystrix.command.default.execution.timeout.enabled: false

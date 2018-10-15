@@ -50,11 +50,11 @@ The PoC sample pursue to cover below functionalities:
  >    In order to keep the PoC sample as simple as possible, I didn't involve CI/CD features here. 
 
 
-| Feature                | CoveredBy                 | Layer 3
-| ---------------------- | ------------------------- | -------
-|               L1 Name  |               L2 Name A   | L3 Name A
-|                        |                           | L3 Name B
-|                        |               L2 Name B   | L3 Name C
+| MSA Aspect             | Feature                   | Tech-Deps/Vendors  | Related Module
+| ---------------------- | ------------------------- | ------------------ | --------------
+|               Dev      |               APIDoc      | Swagger            |
+|                        |               TDD         |                    |
+|                        |               AOP         |                    |
 |                        |                           | L3 Name D
 |               L1 Name  |               L2 Name A   | L3 Name A
 |                        |                           | L3 Name B
