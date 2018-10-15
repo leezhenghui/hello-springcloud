@@ -13,7 +13,11 @@ spring:
     name: turbine-aggr
 server:
   port: 9090
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 ---
 
 spring:
@@ -31,3 +35,8 @@ spring:
     name: turbin-aggr
 server:
   port: ${NOMAD_PORT_http}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

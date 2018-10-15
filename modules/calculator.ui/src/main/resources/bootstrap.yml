@@ -51,3 +51,9 @@ spring:
     name: calculator-ui
 server:
   port: ${NOMAD_PORT_http}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

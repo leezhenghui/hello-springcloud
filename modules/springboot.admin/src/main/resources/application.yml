@@ -38,6 +38,10 @@ server:
 
 spring:
   profiles: dev
+  security:
+      user:
+        name: "user"
+        password: "password"
   cloud:
     consul:
       config:

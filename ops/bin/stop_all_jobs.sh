@@ -16,7 +16,10 @@ echo "Stopping calculator-ui-job"
 $NOMAD_CMD job stop calculator-ui-job 
 
 echo "Stopping api-gateway-job"
-$NOMAD_CMD job stop api-gateway-job 
+$NOMAD_CMD job stop api-gateway-job
+
+echo "Stopping springboot-admin-job"
+$NOMAD_CMD job stop springboot-admin-job
 
 echo "Stopping hashi-ui"
 $NOMAD_CMD job stop hashi-ui 

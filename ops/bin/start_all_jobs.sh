@@ -13,5 +13,7 @@ echo "Starting calculator-ui service"
 $NOMAD_CMD run /vagrant/deployable/calculator-ui.dev.hcl
 echo "Starting api-gateway service"
 $NOMAD_CMD run /vagrant/deployable/api-gateway.dev.hcl
+echo "Starting api-gateway service"
+$NOMAD_CMD run /vagrant/deployable/springboot-admin.dev.hcl
 echo "Starting zipin-server service"
 $NOMAD_CMD run /vagrant/deployable/zipkin-server.dev.hcl

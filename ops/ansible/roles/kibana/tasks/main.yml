@@ -48,7 +48,7 @@
   tags: [kibana]
 
 - pause:
-    seconds: 15 
+    seconds: 10
 
 - name: Check if Kibana is running
   shell: ps -ef | grep kibana | grep -v grep 

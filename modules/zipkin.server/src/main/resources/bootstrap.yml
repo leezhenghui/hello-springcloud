@@ -20,6 +20,11 @@ zipkin:
 #    type: 'cassandra3'
 server:
   port: 9411
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 ---
 
@@ -45,3 +50,9 @@ zipkin:
       topic: 'zipkin'
 #  storage:
 #    type: 'cassandra3'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

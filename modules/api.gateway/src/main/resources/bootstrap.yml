@@ -19,7 +19,11 @@ server:
     max-threads: 1000
     max-connections: 2000
 
-management.endpoints.web.exposure.include: '*'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 ---
 
@@ -44,4 +48,8 @@ server:
     max-threads: 1000
     max-connections: 2000
 
-management.endpoints.web.exposure.include: '*'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

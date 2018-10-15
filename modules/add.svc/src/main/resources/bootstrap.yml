@@ -14,6 +14,12 @@ spring:
 server:
   port: 0
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 ---
 
 spring:
@@ -31,3 +37,9 @@ spring:
     name: add-svc
 server:
   port: ${NOMAD_PORT_http}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
