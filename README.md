@@ -61,6 +61,7 @@ Features coverage matrix
 |    Intercommunication  |Edge-Servie(API) Gateway   | Zuul               |api.gateway
 |                        |Service Discovery/Registry | Consul             |All
 |                        |        Load Balance       | Spring, Robbon     |api.gateway, calculator.ui
+|                        |     Event-Driven/Messaging| Kafka(transactional message)|ifw.lib(counter interceptor), calculator.ui
 |                        |        Circuit Breakers   | Spring, Hystrix    |api.gateway, calculator.ui
 |                        |        Distributed Tracing| OpenTracing, Zipkin|calculator.ui(HTTP), add.svc(HTTP), sub.svc(HTTP), api.gateway(Kafka)
 | Service Orchestration  |Service Scheduling         | Nomad              |All
