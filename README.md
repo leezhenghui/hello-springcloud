@@ -64,17 +64,17 @@ Features coverage matrix
 |                        |     Event-Driven/Messaging| Kafka(transactional message)|ifw.lib(counter interceptor), calculator.ui
 |                        |        Circuit Breakers   | Spring, Hystrix    |api.gateway, calculator.ui
 |                        |        Distributed Tracing| OpenTracing, Zipkin|calculator.ui(HTTP), add.svc(HTTP), sub.svc(HTTP), api.gateway(Kafka)
-| Service Orchestration  |Service Scheduling         | Nomad              |All
+| Service Orchestration  |Service Scheduling         | Nomad              |Hybride deployables support, standalone, container.
 |                        |Centralized Logging        | Nomad(Sidecar Task), Filebeat, ELK|calculator.ui(local file), add.svc(local file), sub.svc(local file), api.gateway(Kafka)
-| Operation              |Application Monitor        | Springboot-Admin, Spring-acutator|All
-|                        |Service allocation status  | Nomad, Hashi-ui|All
+| Operation              |Service Admin| Springboot-Admin, Spring-acutator|All
+|                        |Service allocation status| Nomad, Hashi-ui|All
 |                        |Distributed Tracing Reporter|Zipkin-ui |All
-|                        |Centralized Logging Query  | ELK, Kibana|All
+|                        |Centralized Logging Query| ELK, Kibana|All
 |                        |Overall System(Linux) profiling|nmon|All
 |                        |Process full stack(java, c, kernel) profiling| perf_event, framegraph|All
-|                        |Java heap analysis  | IBM/Oracle JDK|
-|                        |Java coredump analysis  | IBM/Oracle JDK|
-|                        |Web Perf Testing  | wrk|
+|                        |Java heap analysis| IBM/Oracle JDK|
+|                        |Java coredump analysis| IBM/Oracle JDK|
+|                        |Web Perf Testing|wrk|
 
 ### Spring-Boot Modules
 
@@ -625,6 +625,9 @@ Open the browser on your host with url "http://10.10.10.200:3000"
 
 ![hashi-ui-consul-overview](./docs/hashi-ui-consul-overview.png)
 
+#### Launch Springboot-Admin
+
+Open the browser on your host with url "http://10.10.10.200:9080"
 
 #### Run the sample
 
