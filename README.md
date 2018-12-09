@@ -1,6 +1,6 @@
 ## Introduction
 
-The purpose of this repository aims to provide a hands-on architecture PoC(proof-of-concept) sample that are easy to understand and demonstrate how to **build** and **run** a `microservices architecture`(MSA) application based on the ecosystem comprises of the excellent technologies offering by `Spring-Cloud`, `Hashicorp`, `Elastic`,  `Netflix` and etc. 
+The purpose of this repository aims to provide a hands-on practice for my series articles [build a modern scalable system](https://leezhenghui.github.io/microservices/2018/10/27/build-a-scalable-system-practice-on-springcloud.html). With this PoC(proof-of-concept) sample, we can learn how to **build** and **run** a `microservices architecture`(MSA) application based on the ecosystem comprises of the excellent technologies offering by `Spring-Cloud`, `Hashicorp`, `Elastic`,  `Netflix` and etc. 
 
 ## Microservices Landscape in Spring-Cloud ecosystem
 
@@ -191,6 +191,11 @@ wrk.body   = "{ \"expression\": \"1+1+2+3+4+5+6-1-2-3-4-5-6+9+8-4-5\"}"
 ```shell
    wrk -t 200 -c 200 -s ./scripts/calculator.lua -d 60s --latency http://localhost:2809/calculator-ui/api/v1/compute
 ```
+
+## AOP
+
+The goal of aspect oriented programming (AOP) is to provide a general mechanism for weaving additional logic into program code without making changes to the code itself, resulting in very loose coupling between the additional logic and the actual business logic.
+//TODO
 
 ## Circuit Breaker(Hystrix)
 
